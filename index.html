@@ -40,7 +40,6 @@
             --transition: 0.3s ease;
         }
 
-        /* ===== DARK THEME ===== */
         [data-theme="dark"] {
             --bg-body: #1a202c;
             --bg-container: #2d3748;
@@ -66,7 +65,6 @@
             --sync-pending-text: #fefcbf;
         }
 
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -94,7 +92,7 @@
             transition: background var(--transition), box-shadow var(--transition);
         }
 
-        /* ===== HEADER ===== */
+        /* ----- Header ----- */
         .header-row {
             display: flex;
             justify-content: space-between;
@@ -103,20 +101,8 @@
             gap: 10px;
             margin-bottom: 4px;
         }
-
-        .header-left {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-            padding-top: 4px;
-        }
-
+        .header-left { flex: 1; min-width: 200px; }
+        .header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 4px; }
         h1 {
             font-size: clamp(20px, 5vw, 28px);
             color: var(--text-primary);
@@ -126,7 +112,6 @@
             flex-wrap: wrap;
             transition: color var(--transition);
         }
-
         .subtitle {
             color: var(--text-secondary);
             margin-bottom: 4px;
@@ -137,7 +122,6 @@
             gap: 8px;
             transition: color var(--transition);
         }
-
         .badge {
             background: var(--badge-bg);
             color: var(--badge-text);
@@ -148,7 +132,6 @@
             white-space: nowrap;
             transition: background var(--transition), color var(--transition);
         }
-
         .sync-status {
             font-size: clamp(10px, 1.8vw, 13px);
             padding: 3px 12px;
@@ -157,16 +140,10 @@
             white-space: nowrap;
             transition: background var(--transition), color var(--transition);
         }
-        .sync-ok {
-            background: var(--sync-ok-bg);
-            color: var(--sync-ok-text);
-        }
-        .sync-pending {
-            background: var(--sync-pending-bg);
-            color: var(--sync-pending-text);
-        }
+        .sync-ok { background: var(--sync-ok-bg); color: var(--sync-ok-text); }
+        .sync-pending { background: var(--sync-pending-bg); color: var(--sync-pending-text); }
 
-        /* ===== THEME TOGGLE ===== */
+        /* ----- Theme Toggle ----- */
         .theme-toggle {
             background: var(--bg-box);
             border: 2px solid var(--border-color);
@@ -183,7 +160,6 @@
             flex-shrink: 0;
             touch-action: manipulation;
         }
-
         .theme-toggle .toggle-track {
             position: absolute;
             top: 3px;
@@ -197,33 +173,24 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
-
         [data-theme="dark"] .theme-toggle .toggle-track {
             transform: translateX(26px);
             background: #4a5568;
             color: #f6e05e;
         }
-
-        .theme-toggle .icon-sun,
-        .theme-toggle .icon-moon {
+        .theme-toggle .icon-sun, .theme-toggle .icon-moon {
             font-size: 14px;
             line-height: 1;
             z-index: 1;
             pointer-events: none;
             color: var(--text-muted);
         }
+        .theme-toggle .icon-moon { color: #a0aec0; }
+        [data-theme="dark"] .theme-toggle .icon-sun { color: #f6e05e; }
 
-        .theme-toggle .icon-moon {
-            color: #a0aec0;
-        }
-
-        [data-theme="dark"] .theme-toggle .icon-sun {
-            color: #f6e05e;
-        }
-
-        /* ===== SECTION TITLE ===== */
+        /* ----- Section Title ----- */
         .section-title {
             font-size: clamp(14px, 2.8vw, 18px);
             font-weight: 600;
@@ -234,20 +201,18 @@
             transition: color var(--transition), border-color var(--transition);
         }
 
-        /* ===== FORM ROW ===== */
+        /* ----- Form ----- */
         .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 12px;
             margin-bottom: 14px;
         }
-
         .form-group {
             display: flex;
             flex-direction: column;
             min-width: 0;
         }
-
         .form-group label {
             font-weight: 600;
             font-size: clamp(11px, 1.8vw, 14px);
@@ -255,9 +220,7 @@
             margin-bottom: 3px;
             transition: color var(--transition);
         }
-
-        .form-group select,
-        .form-group input {
+        .form-group select, .form-group input {
             padding: 8px 10px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -270,33 +233,28 @@
             -webkit-appearance: none;
             appearance: none;
         }
-
         .form-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 12px center;
             padding-right: 32px;
         }
-
         [data-theme="dark"] .form-group select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0aec0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
         }
-
-        .form-group select:focus,
-        .form-group input:focus {
+        .form-group select:focus, .form-group input:focus {
             outline: none;
             border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+            box-shadow: 0 0 0 3px rgba(66,153,225,0.2);
         }
 
-        /* ===== IMAGE UPLOAD ===== */
+        /* ----- Image Upload ----- */
         .image-upload-area {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
             margin: 12px 0 16px 0;
         }
-
         .image-box {
             background: var(--bg-box);
             border: 2px dashed var(--border-color);
@@ -309,12 +267,10 @@
             align-items: center;
             cursor: pointer;
         }
-
         .image-box:hover {
             border-color: #4299e1;
             background: var(--bg-box-hover);
         }
-
         .image-box label {
             font-weight: 600;
             color: var(--text-primary);
@@ -324,11 +280,7 @@
             width: 100%;
             transition: color var(--transition);
         }
-
-        .image-box input[type="file"] {
-            display: none;
-        }
-
+        .image-box input[type="file"] { display: none; }
         .upload-btn {
             background: #4299e1;
             color: white;
@@ -345,7 +297,6 @@
             max-width: 200px;
             pointer-events: none;
         }
-
         .image-preview {
             margin-top: 10px;
             max-width: 100%;
@@ -358,11 +309,7 @@
             width: 100%;
             transition: border-color var(--transition);
         }
-
-        .image-preview.show {
-            display: block;
-        }
-
+        .image-preview.show { display: block; }
         .file-name {
             font-size: clamp(10px, 1.4vw, 12px);
             color: var(--text-muted);
@@ -372,14 +319,13 @@
             transition: color var(--transition);
         }
 
-        /* ===== BUTTONS ===== */
+        /* ----- Buttons ----- */
         .btn-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin: 14px 0 10px 0;
         }
-
         .btn {
             padding: 10px 18px;
             border: none;
@@ -398,48 +344,19 @@
             min-height: 44px;
             color: white;
         }
+        .btn:active { transform: scale(0.96); }
+        .btn-primary { background: var(--primary); }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-danger { background: var(--danger); }
+        .btn-danger:hover { background: var(--danger-hover); }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: var(--success-hover); }
+        .btn-warning { background: var(--warning); }
+        .btn-warning:hover { background: var(--warning-hover); }
+        .btn-secondary { background: var(--btn-secondary-bg); color: var(--btn-secondary-text); }
+        .btn-secondary:hover { opacity: 0.8; }
 
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-        }
-        .btn-primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-        }
-        .btn-danger:hover {
-            background: var(--danger-hover);
-        }
-
-        .btn-success {
-            background: var(--success);
-        }
-        .btn-success:hover {
-            background: var(--success-hover);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-        }
-        .btn-warning:hover {
-            background: var(--warning-hover);
-        }
-
-        .btn-secondary {
-            background: var(--btn-secondary-bg);
-            color: var(--btn-secondary-text);
-        }
-        .btn-secondary:hover {
-            opacity: 0.8;
-        }
-
-        /* ===== STATUS BAR ===== */
+        /* ----- Status Bar ----- */
         .status-bar {
             background: var(--bg-status);
             padding: 10px 14px;
@@ -454,13 +371,9 @@
             border: 1px solid var(--border-color);
             transition: background var(--transition), color var(--transition), border-color var(--transition);
         }
+        .status-bar .count { font-weight: 700; color: #2b6cb0; }
 
-        .status-bar .count {
-            font-weight: 700;
-            color: #2b6cb0;
-        }
-
-        /* ===== TABLE ===== */
+        /* ----- Table ----- */
         .table-wrap {
             overflow-x: auto;
             margin-top: 12px;
@@ -469,14 +382,12 @@
             -webkit-overflow-scrolling: touch;
             transition: border-color var(--transition);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: clamp(11px, 1.4vw, 13px);
             min-width: 650px;
         }
-
         th {
             background: var(--bg-table-header);
             color: var(--text-primary);
@@ -490,7 +401,6 @@
             z-index: 2;
             transition: background var(--transition), color var(--transition), border-color var(--transition);
         }
-
         td {
             padding: 8px 8px;
             border-bottom: 1px solid var(--border-color);
@@ -500,7 +410,6 @@
             color: var(--text-primary);
             transition: color var(--transition), border-color var(--transition);
         }
-
         td img {
             max-width: 45px;
             max-height: 40px;
@@ -509,7 +418,6 @@
             display: block;
             transition: border-color var(--transition);
         }
-
         .empty-msg {
             text-align: center;
             color: var(--text-muted);
@@ -518,7 +426,7 @@
             transition: color var(--transition);
         }
 
-        /* ===== TOAST ===== */
+        /* ----- Toast ----- */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -529,7 +437,7 @@
             padding: 12px 20px;
             border-radius: 12px;
             font-size: clamp(13px, 2vw, 15px);
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 30px rgba(0,0,0,0.3);
             opacity: 0;
             transition: opacity 0.4s ease, background var(--transition), color var(--transition);
             z-index: 999;
@@ -537,12 +445,8 @@
             text-align: center;
             pointer-events: none;
         }
+        .toast.show { opacity: 1; }
 
-        .toast.show {
-            opacity: 1;
-        }
-
-        /* ===== FOOTER ===== */
         .footer-note {
             margin-top: 14px;
             font-size: clamp(11px, 1.4vw, 13px);
@@ -551,615 +455,546 @@
             transition: color var(--transition);
         }
 
-        /* ===== RESPONSIVE BREAKPOINTS ===== */
-
+        /* ----- Responsive ----- */
         @media (max-width: 400px) {
-            .container {
-                padding: 12px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .image-upload-area {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-                min-width: unset;
-            }
-            .status-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-            table {
-                font-size: 10px;
-                min-width: 500px;
-            }
-            th,
-            td {
-                padding: 5px 4px;
-            }
-            td img {
-                max-width: 30px;
-                max-height: 28px;
-            }
-            .header-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .header-right {
-                justify-content: flex-start;
-            }
+            .container { padding: 12px; }
+            .form-row { grid-template-columns: 1fr; gap: 10px; }
+            .image-upload-area { grid-template-columns: 1fr; gap: 12px; }
+            .btn-group { flex-direction: column; }
+            .btn { width: 100%; min-width: unset; }
+            .status-bar { flex-direction: column; text-align: center; }
+            table { font-size: 10px; min-width: 500px; }
+            th, td { padding: 5px 4px; }
+            td img { max-width: 30px; max-height: 28px; }
+            .header-row { flex-direction: column; align-items: stretch; }
+            .header-right { justify-content: flex-start; }
         }
-
         @media (min-width: 401px) and (max-width: 600px) {
-            .container {
-                padding: 14px;
-            }
-            .form-row {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .image-upload-area {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-                min-width: unset;
-            }
-            .status-bar {
-                flex-direction: column;
-                text-align: center;
-            }
-            table {
-                font-size: 11px;
-                min-width: 550px;
-            }
-            th,
-            td {
-                padding: 6px 6px;
-            }
+            .container { padding: 14px; }
+            .form-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .image-upload-area { grid-template-columns: 1fr; gap: 12px; }
+            .btn-group { flex-direction: column; }
+            .btn { width: 100%; min-width: unset; }
+            .status-bar { flex-direction: column; text-align: center; }
+            table { font-size: 11px; min-width: 550px; }
+            th, td { padding: 6px 6px; }
         }
-
         @media (min-width: 601px) and (max-width: 900px) {
-            .container {
-                padding: 18px;
-            }
-            .form-row {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 12px;
-            }
-            .image-upload-area {
-                grid-template-columns: 1fr 1fr;
-                gap: 14px;
-            }
-            .btn-group {
-                flex-wrap: wrap;
-            }
-            .btn {
-                flex: 1 1 calc(50% - 10px);
-                min-width: 120px;
-            }
-            table {
-                font-size: 12px;
-                min-width: 600px;
-            }
+            .container { padding: 18px; }
+            .form-row { grid-template-columns: repeat(3,1fr); gap: 12px; }
+            .image-upload-area { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .btn-group { flex-wrap: wrap; }
+            .btn { flex: 1 1 calc(50% - 10px); min-width: 120px; }
+            table { font-size: 12px; min-width: 600px; }
         }
-
         @media (min-width: 901px) {
-            .container {
-                padding: 30px;
-            }
-            .form-row {
-                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-                gap: 15px;
-            }
-            .image-upload-area {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            .btn {
-                flex: 0 1 auto;
-                min-width: 120px;
-            }
-            .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            }
-            table {
-                font-size: 13px;
-                min-width: unset;
-            }
+            .container { padding: 30px; }
+            .form-row { grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 15px; }
+            .image-upload-area { grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
+            .btn { flex: 0 1 auto; min-width: 120px; }
+            .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+            table { font-size: 13px; min-width: unset; }
         }
-
         @media (hover: none) {
-            .btn:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            .theme-toggle:active .toggle-track {
-                transform: scale(0.9);
-            }
-            [data-theme="dark"] .theme-toggle:active .toggle-track {
-                transform: translateX(26px) scale(0.9);
-            }
-            select,
-            input {
-                font-size: 16px !important;
-            }
+            .btn:hover { transform: none !important; box-shadow: none !important; }
+            .theme-toggle:active .toggle-track { transform: scale(0.9); }
+            [data-theme="dark"] .theme-toggle:active .toggle-track { transform: translateX(26px) scale(0.9); }
+            select, input { font-size: 16px !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header-row">
-            <div class="header-left">
-                <h1>🏠 Indoor Scene Change Dataset</h1>
-                <div class="subtitle">
-                    <span>Ashraful(36)--Tushar(37)--Dipta(38)--Ayesha(39)--Masum(40)--Abir(49)--Rajorshi(60)</span>
-                    <span class="badge">7 Users</span>
-                    <span class="sync-status sync-pending" id="syncStatus">● Local</span>
-                </div>
-            </div>
-            <div class="header-right">
-                <!-- Theme Toggle -->
-                <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="Toggle dark/light mode">
-                    <span class="icon-sun">☀️</span>
-                    <span class="toggle-track" id="toggleTrack">🌙</span>
-                    <span class="icon-moon">🌙</span>
-                </div>
+<div class="container">
+    <!-- Header -->
+    <div class="header-row">
+        <div class="header-left">
+            <h1>🏠 Indoor Scene Change Dataset</h1>
+            <div class="subtitle">
+                <span>Ashraful(36)--Tushar(37)--Dipta(38)--Ayesha(39)--Masum(40)--Abir(49)--Rajorshi(60)</span>
+                <span class="badge">7 Users</span>
+                <span class="sync-status sync-pending" id="syncStatus">● Local</span>
             </div>
         </div>
-
-        <!-- ===== FORM ===== -->
-        <div class="section-title">📝 Enter Data &amp; Upload Images</div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label>🔢 Roll</label>
-                <select id="rollSelect">
-                    <option value="2107036">2107036</option>
-                    <option value="2107037">2107037</option>
-                    <option value="2107038">2107038</option>
-                    <option value="2107039">2107039</option>
-                    <option value="2107040">2107040</option>
-                    <option value="2107049">2107049</option>
-                    <option value="2107060">2107060</option>
-                </select>
+        <div class="header-right">
+            <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="Toggle dark/light mode">
+                <span class="icon-sun">☀️</span>
+                <span class="toggle-track" id="toggleTrack">🌙</span>
+                <span class="icon-moon">🌙</span>
             </div>
-            <div class="form-group">
-                <label>🏠 Room Type</label>
-                <select id="roomType">
-                    <option value="Hallroom">Hallroom</option>
-                    <option value="Classroom">Classroom</option>
-                    <option value="Kitchen">Kitchen</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>🆔 Room ID</label>
-                <input type="text" id="roomId" placeholder="e.g. H36-1, C36-2, K36-1" />
-            </div>
-            <div class="form-group">
-                <label>📷 Cam</label>
-                <select id="cameraPos">
-                    <option value="Camera_C1">Camera_C1</option>
-                    <option value="Camera_C2">Camera_C2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>🔄 Change</label>
-                <select id="changeType">
-                    <option value="Add">Add</option>
-                    <option value="Delete">Delete</option>
-                    <option value="Move">Move</option>
-                    <option value="Open">Open</option>
-                    <option value="Close">Close</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>📦 Object</label>
-                <select id="objectClass">
-                    <option value="Mug">Mug</option>
-                    <option value="Laptop">Laptop</option>
-                    <option value="Fridge">Fridge</option>
-                    <option value="Book">Book</option>
-                    <option value="Chair">Chair</option>
-                    <option value="Table">Table</option>
-                    <option value="Cabinet">Cabinet</option>
-                    <option value="Drawer">Drawer</option>
-                    <option value="Bowl">Bowl</option>
-                    <option value="Cup">Cup</option>
-                    <option value="SoapBottle">Soap Bottle</option>
-                    <option value="ToiletPaper">Toilet Paper</option>
-                    <option value="Vase">Vase</option>
-                    <option value="Clock">Clock</option>
-                    <option value="Pot">Pot</option>
-                    <option value="Pan">Pan</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Image Upload -->
-        <div class="image-upload-area">
-            <div class="image-box" id="beforeBox">
-                <label>📸 Before</label>
-                <div style="width:100%;">
-                    <button class="upload-btn">Choose File</button>
-                    <input type="file" id="beforeInput" accept="image/*" />
-                </div>
-                <img id="beforePreview" class="image-preview" />
-                <div id="beforeFileName" class="file-name"></div>
-            </div>
-            <div class="image-box" id="afterBox">
-                <label>📸 After</label>
-                <div style="width:100%;">
-                    <button class="upload-btn">Choose File</button>
-                    <input type="file" id="afterInput" accept="image/*" />
-                </div>
-                <img id="afterPreview" class="image-preview" />
-                <div id="afterFileName" class="file-name"></div>
-            </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="btn-group">
-            <button class="btn btn-primary" id="submitBtn">💾 Submit</button>
-            <button class="btn btn-danger" id="clearAllBtn">🗑️ Clear All (Local Only)</button>
-            <button class="btn btn-success" id="exportCsvBtn">📥 CSV</button>
-            <button class="btn btn-warning" id="exportZipBtn">📦 ZIP</button>
-        </div>
-
-        <!-- Status -->
-        <div class="status-bar">
-            <span>📋 Total: <span class="count" id="totalCount">0</span></span>
-            <span>📁 <span id="folderPathDisplay">Hallroom/H01/C1/Add/Mug</span></span>
-        </div>
-
-        <!-- Table -->
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Roll</th>
-                        <th>RoomType</th>
-                        <th>RoomID</th>
-                        <th>Cam</th>
-                        <th>Before</th>
-                        <th>After</th>
-                        <th>Change</th>
-                        <th>Object</th>
-                        <th>Timestamp</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTableBody">
-                    <tr><td colspan="10" class="empty-msg">No data yet. Upload &amp; submit!</td></tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="footer-note">
-            💡 Data stored locally + synced to Google Sheet. <strong>Clear All</strong> removes only your local data (Sheet & Drive remain unchanged).
         </div>
     </div>
 
-    <!-- Toast -->
-    <div class="toast" id="toast"></div>
+    <!-- Form -->
+    <div class="section-title">📝 Enter Data &amp; Upload Images</div>
+    <div class="form-row">
+        <div class="form-group">
+            <label>🔢 Roll</label>
+            <select id="rollSelect">
+                <option value="2107036">2107036</option>
+                <option value="2107037">2107037</option>
+                <option value="2107038">2107038</option>
+                <option value="2107039">2107039</option>
+                <option value="2107040">2107040</option>
+                <option value="2107049">2107049</option>
+                <option value="2107060">2107060</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>🏠 Room Type</label>
+            <select id="roomType">
+                <option value="Hallroom">Hallroom</option>
+                <option value="Classroom">Classroom</option>
+                <option value="Kitchen">Kitchen</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>🆔 Room ID</label>
+            <input type="text" id="roomId" placeholder="e.g. H36-1, C36-2, K36-1" />
+        </div>
+        <div class="form-group">
+            <label>📷 Cam</label>
+            <select id="cameraPos">
+                <option value="Camera_C1">Camera_C1</option>
+                <option value="Camera_C2">Camera_C2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>🔄 Change</label>
+            <select id="changeType">
+                <option value="Add">Add</option>
+                <option value="Delete">Delete</option>
+                <option value="Move">Move</option>
+                <option value="Open">Open</option>
+                <option value="Close">Close</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>📦 Object</label>
+            <select id="objectClass">
+                <option value="Mug">Mug</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Fridge">Fridge</option>
+                <option value="Book">Book</option>
+                <option value="Chair">Chair</option>
+                <option value="Table">Table</option>
+                <option value="Cabinet">Cabinet</option>
+                <option value="Drawer">Drawer</option>
+                <option value="Bowl">Bowl</option>
+                <option value="Cup">Cup</option>
+                <option value="SoapBottle">Soap Bottle</option>
+                <option value="ToiletPaper">Toilet Paper</option>
+                <option value="Vase">Vase</option>
+                <option value="Clock">Clock</option>
+                <option value="Pot">Pot</option>
+                <option value="Pan">Pan</option>
+            </select>
+        </div>
+    </div>
 
-    <script>
-        // ============================================================
-        //  JAVASCRIPT – Full CRUD + Google Sheet Sync + CSV + ZIP Export
-        //  No ImageID column, no Delete button – just data display
-        // ============================================================
+    <!-- Image Upload -->
+    <div class="image-upload-area">
+        <div class="image-box" id="beforeBox">
+            <label>📸 Before</label>
+            <div style="width:100%;">
+                <button class="upload-btn">Choose File</button>
+                <input type="file" id="beforeInput" accept="image/*" />
+            </div>
+            <img id="beforePreview" class="image-preview" />
+            <div id="beforeFileName" class="file-name"></div>
+        </div>
+        <div class="image-box" id="afterBox">
+            <label>📸 After</label>
+            <div style="width:100%;">
+                <button class="upload-btn">Choose File</button>
+                <input type="file" id="afterInput" accept="image/*" />
+            </div>
+            <img id="afterPreview" class="image-preview" />
+            <div id="afterFileName" class="file-name"></div>
+        </div>
+    </div>
 
-        // ===== CONFIG =====
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq7OH_LijJSPysbvOI4Xp-b_9azcTDBVffsEv7FzewcBARtSfZ4jHu1tp2swhUPHQBGg/exec";
+    <!-- Buttons -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="submitBtn">💾 Submit</button>
+        <button class="btn btn-danger" id="clearAllBtn">🗑️ Clear All (Local Only)</button>
+        <button class="btn btn-success" id="exportCsvBtn">📥 CSV</button>
+        <button class="btn btn-warning" id="exportZipBtn">📦 ZIP</button>
+    </div>
 
-        // ===== DOM refs =====
-        const rollSelect = document.getElementById('rollSelect');
-        const roomType = document.getElementById('roomType');
-        const roomId = document.getElementById('roomId');
-        const cameraPos = document.getElementById('cameraPos');
-        const changeType = document.getElementById('changeType');
-        const objectClass = document.getElementById('objectClass');
-        const beforeInput = document.getElementById('beforeInput');
-        const afterInput = document.getElementById('afterInput');
-        const beforePreview = document.getElementById('beforePreview');
-        const afterPreview = document.getElementById('afterPreview');
-        const beforeFileName = document.getElementById('beforeFileName');
-        const afterFileName = document.getElementById('afterFileName');
-        const beforeBox = document.getElementById('beforeBox');
-        const afterBox = document.getElementById('afterBox');
-        const submitBtn = document.getElementById('submitBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
-        const exportCsvBtn = document.getElementById('exportCsvBtn');
-        const exportZipBtn = document.getElementById('exportZipBtn');
-        const tbody = document.getElementById('dataTableBody');
-        const totalCount = document.getElementById('totalCount');
-        const folderPathDisplay = document.getElementById('folderPathDisplay');
-        const syncStatus = document.getElementById('syncStatus');
-        const toast = document.getElementById('toast');
-        const themeToggle = document.getElementById('themeToggle');
-        const toggleTrack = document.getElementById('toggleTrack');
+    <!-- Status -->
+    <div class="status-bar">
+        <span>📋 Total: <span class="count" id="totalCount">0</span></span>
+        <span>📁 <span id="folderPathDisplay">Hallroom/H01/C1/Add/Mug</span></span>
+    </div>
 
-        // ===== THEME TOGGLE =====
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            toggleTrack.textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
+    <!-- Table -->
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Roll</th>
+                    <th>RoomType</th>
+                    <th>RoomID</th>
+                    <th>Cam</th>
+                    <th>Before</th>
+                    <th>After</th>
+                    <th>Change</th>
+                    <th>Object</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <tr><td colspan="10" class="empty-msg">No data yet. Upload &amp; submit!</td></tr>
+            </tbody>
+        </table>
+    </div>
 
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            setTheme(next);
-        }
+    <div class="footer-note">
+        💡 Data stored locally + synced to Google Sheet. <strong>Clear All</strong> removes only your local data (Sheet & Drive remain unchanged).
+    </div>
+</div>
 
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        setTheme(savedTheme);
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-        themeToggle.addEventListener('click', toggleTheme);
-        themeToggle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleTheme();
-            }
-        });
+<script>
+// ============================================================
+//  JAVASCRIPT – Full CRUD + Google Sheet Sync + CSV + ZIP Export
+//  Filename: includes milliseconds + SAME random number for before/after
+// ============================================================
 
-        // ===== State =====
-        let annotations = [];
+// ===== CONFIG =====
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJm0m-bfaw4QNHlxGqy6pHHKp4v6CZ-qHZbzjNdmKKvCORLfe0vrEmPF-aX0Ox6spdRw/exec";
 
-        // ===== Helpers =====
-        function showToast(msg, duration = 3000) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._hide);
-            toast._hide = setTimeout(() => toast.classList.remove('show'), duration);
-        }
+// ===== DOM refs =====
+const rollSelect = document.getElementById('rollSelect');
+const roomType = document.getElementById('roomType');
+const roomId = document.getElementById('roomId');
+const cameraPos = document.getElementById('cameraPos');
+const changeType = document.getElementById('changeType');
+const objectClass = document.getElementById('objectClass');
+const beforeInput = document.getElementById('beforeInput');
+const afterInput = document.getElementById('afterInput');
+const beforePreview = document.getElementById('beforePreview');
+const afterPreview = document.getElementById('afterPreview');
+const beforeFileName = document.getElementById('beforeFileName');
+const afterFileName = document.getElementById('afterFileName');
+const beforeBox = document.getElementById('beforeBox');
+const afterBox = document.getElementById('afterBox');
+const submitBtn = document.getElementById('submitBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
+const exportCsvBtn = document.getElementById('exportCsvBtn');
+const exportZipBtn = document.getElementById('exportZipBtn');
+const tbody = document.getElementById('dataTableBody');
+const totalCount = document.getElementById('totalCount');
+const folderPathDisplay = document.getElementById('folderPathDisplay');
+const syncStatus = document.getElementById('syncStatus');
+const toast = document.getElementById('toast');
+const themeToggle = document.getElementById('themeToggle');
+const toggleTrack = document.getElementById('toggleTrack');
 
-        function getFolderPath() {
-            return `${roomType.value}/${roomId.value.trim() || 'Unknown'}/${cameraPos.value}/${changeType.value}/${objectClass.value}`;
-        }
+// ===== THEME TOGGLE =====
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    toggleTrack.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+}
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
+themeToggle.addEventListener('click', toggleTheme);
+themeToggle.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleTheme(); }
+});
 
-        function updateFolderDisplay() {
-            folderPathDisplay.textContent = getFolderPath();
-        }
+// ===== State =====
+let annotations = [];
 
-        [roomType, roomId, cameraPos, changeType, objectClass].forEach(el => {
-            el.addEventListener('change', updateFolderDisplay);
-            if (el.tagName === 'INPUT') {
-                el.addEventListener('input', updateFolderDisplay);
-            }
-        });
+// ===== Helpers =====
+function showToast(msg, duration = 3000) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._hide);
+    toast._hide = setTimeout(() => toast.classList.remove('show'), duration);
+}
 
-        // ===== Click whole block to upload =====
-        beforeBox.addEventListener('click', function(e) {
-            if (e.target.tagName === 'IMG' || e.target.classList.contains('file-name')) return;
-            beforeInput.click();
-        });
+function getFolderPath() {
+    return `${roomType.value}/${roomId.value.trim() || 'Unknown'}/${cameraPos.value}/${changeType.value}/${objectClass.value}`;
+}
+function updateFolderDisplay() {
+    folderPathDisplay.textContent = getFolderPath();
+}
+[roomType, roomId, cameraPos, changeType, objectClass].forEach(el => {
+    el.addEventListener('change', updateFolderDisplay);
+    if (el.tagName === 'INPUT') el.addEventListener('input', updateFolderDisplay);
+});
 
-        afterBox.addEventListener('click', function(e) {
-            if (e.target.tagName === 'IMG' || e.target.classList.contains('file-name')) return;
-            afterInput.click();
-        });
+// ===== Click whole block to upload =====
+beforeBox.addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG' || e.target.classList.contains('file-name')) return;
+    beforeInput.click();
+});
+afterBox.addEventListener('click', function(e) {
+    if (e.target.tagName === 'IMG' || e.target.classList.contains('file-name')) return;
+    afterInput.click();
+});
 
-        // ===== Load/Save localStorage =====
-        function loadData() {
-            try {
-                const raw = localStorage.getItem('scene_annotations_v10');
-                annotations = raw ? JSON.parse(raw) : [];
-            } catch (e) { annotations = []; }
-            renderTable();
-            updateSyncStatus();
-        }
+// ===== Load/Save localStorage =====
+function loadData() {
+    try {
+        const raw = localStorage.getItem('scene_annotations_v10');
+        annotations = raw ? JSON.parse(raw) : [];
+    } catch (e) { annotations = []; }
+    renderTable();
+    updateSyncStatus();
+}
+function saveData() {
+    localStorage.setItem('scene_annotations_v10', JSON.stringify(annotations));
+    renderTable();
+    updateSyncStatus();
+}
+function updateSyncStatus() {
+    if (SCRIPT_URL) {
+        syncStatus.textContent = '● Synced';
+        syncStatus.className = 'sync-status sync-ok';
+    } else {
+        syncStatus.textContent = '● Local';
+        syncStatus.className = 'sync-status sync-pending';
+    }
+}
 
-        function saveData() {
-            localStorage.setItem('scene_annotations_v10', JSON.stringify(annotations));
-            renderTable();
-            updateSyncStatus();
-        }
+// ===== Save selected Roll =====
+function saveRollPreference() { localStorage.setItem('selected_roll_v10', rollSelect.value); }
+function loadRollPreference() {
+    const savedRoll = localStorage.getItem('selected_roll_v10');
+    if (savedRoll) rollSelect.value = savedRoll;
+}
 
-        function updateSyncStatus() {
-            if (SCRIPT_URL) {
-                syncStatus.textContent = '● Synced';
-                syncStatus.className = 'sync-status sync-ok';
-            } else {
-                syncStatus.textContent = '● Local';
-                syncStatus.className = 'sync-status sync-pending';
-            }
-        }
+// ===== Preview Image =====
+function previewImage(input, previewEl, nameEl) {
+    const file = input.files[0];
+    if (!file) {
+        previewEl.classList.remove('show');
+        previewEl.src = '';
+        nameEl.textContent = '';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        previewEl.src = e.target.result;
+        previewEl.classList.add('show');
+        nameEl.textContent = file.name;
+    };
+    reader.readAsDataURL(file);
+}
+beforeInput.addEventListener('change', function() { previewImage(this, beforePreview, beforeFileName); });
+afterInput.addEventListener('change', function() { previewImage(this, afterPreview, afterFileName); });
 
-        // ===== Save selected Roll to localStorage =====
-        function saveRollPreference() {
-            localStorage.setItem('selected_roll_v10', rollSelect.value);
-        }
+// ===== Read file as base64 =====
+function readFileAsBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
 
-        function loadRollPreference() {
-            const savedRoll = localStorage.getItem('selected_roll_v10');
-            if (savedRoll) {
-                rollSelect.value = savedRoll;
-            }
-        }
+// ================================================================
+//  ★★★ UPDATED: FILENAME GENERATOR WITH COMMON RANDOM ★★★
+//  Takes 'random' as a parameter so before & after get the same value
+// ================================================================
+function generateFileName(prefix, objectTypeVal, changeTypeVal, random) {
+    const now = new Date();
+    // YYYYMMDD_HHMMSS
+    const dateStr = now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0') + '_' +
+        String(now.getHours()).padStart(2, '0') +
+        String(now.getMinutes()).padStart(2, '0') +
+        String(now.getSeconds()).padStart(2, '0');
+    // Milliseconds (3 digits)
+    const ms = String(now.getMilliseconds()).padStart(3, '0');
+    // Return: before_Mug_Add_20260730_211048_600_87.jpg
+    return `${prefix}_${objectTypeVal}_${changeTypeVal}_${dateStr}_${ms}_${random}.jpg`;
+}
 
-        // ===== Preview Image =====
-        function previewImage(input, previewEl, nameEl) {
-            const file = input.files[0];
-            if (!file) {
-                previewEl.classList.remove('show');
-                previewEl.src = '';
-                nameEl.textContent = '';
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewEl.src = e.target.result;
-                previewEl.classList.add('show');
-                nameEl.textContent = file.name;
+// ===== Submit =====
+async function submitAnnotation() {
+    const bFile = beforeInput.files[0];
+    const aFile = afterInput.files[0];
+    const rollVal = rollSelect.value;
+    const rid = roomId.value.trim();
+
+    if (!bFile || !aFile) { showToast('❌ Select both images!', 3000); return; }
+    if (!rid) { showToast('❌ Enter Room ID!', 3000); return; }
+
+    const beforeData = await readFileAsBase64(bFile);
+    const afterData = await readFileAsBase64(aFile);
+
+    const objectTypeVal = objectClass.value;
+    const changeTypeVal = changeType.value;
+    
+    // === Generate ONE common random number for this pair ===
+    const commonRandom = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+    
+    // Generate names using the SAME random number
+    const beforeName = generateFileName('before', objectTypeVal, changeTypeVal, commonRandom);
+    const afterName = generateFileName('after', objectTypeVal, changeTypeVal, commonRandom);
+
+    const entry = {
+        id: Date.now(),
+        roll: rollVal,
+        roomType: roomType.value,
+        roomId: rid,
+        camera: cameraPos.value,
+        before: beforeData,
+        after: afterData,
+        beforeName: beforeName,
+        afterName: afterName,
+        changeType: changeTypeVal,
+        objectClass: objectTypeVal,
+        timestamp: new Date().toISOString()
+    };
+
+    annotations.push(entry);
+    saveData();
+
+    if (SCRIPT_URL) {
+        try {
+            const payload = {
+                roll: entry.roll,
+                roomType: entry.roomType,
+                roomId: entry.roomId,
+                camera: entry.camera,
+                beforeName: entry.beforeName,
+                afterName: entry.afterName,
+                changeType: entry.changeType,
+                objectClass: entry.objectClass,
+                beforeImage: entry.before,
+                afterImage: entry.after,
+                folderPath: `ML_Dataset_Images/${entry.roomType}/${entry.roomId}/${entry.camera}/${entry.changeType}/${entry.objectClass}`
             };
-            reader.readAsDataURL(file);
-        }
-        beforeInput.addEventListener('change', function() { previewImage(this, beforePreview, beforeFileName); });
-        afterInput.addEventListener('change', function() { previewImage(this, afterPreview, afterFileName); });
-
-        // ===== Read file as base64 =====
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
+            showToast('✅ Saved & Synced!', 2000);
+        } catch (e) {
+            showToast('⚠️ Saved locally, sync failed', 3000);
         }
+    } else {
+        showToast('✅ Saved locally!', 2000);
+    }
 
-        // ===== Generate filename with timestamp =====
-        function generateFileName(prefix, objectTypeVal, changeTypeVal) {
-            const now = new Date();
-            const ts = now.getFullYear() +
-                String(now.getMonth() + 1).padStart(2, '0') +
-                String(now.getDate()).padStart(2, '0') +
-                String(now.getHours()).padStart(2, '0') +
-                String(now.getMinutes()).padStart(2, '0') +
-                String(now.getSeconds()).padStart(2, '0');
-            return `${prefix}_${objectTypeVal}_${changeTypeVal}_${ts}.jpg`;
-        }
+    // Clear form
+    beforeInput.value = '';
+    afterInput.value = '';
+    beforePreview.classList.remove('show');
+    beforePreview.src = '';
+    beforeFileName.textContent = '';
+    afterPreview.classList.remove('show');
+    afterPreview.src = '';
+    afterFileName.textContent = '';
+    roomId.value = '';
+}
 
-        // ===== Submit =====
-        async function submitAnnotation() {
-            const bFile = beforeInput.files[0];
-            const aFile = afterInput.files[0];
-            const rollVal = rollSelect.value;
-            const rid = roomId.value.trim();
+// ===== Clear All (Local Only) =====
+function clearAllLocal() {
+    if (annotations.length === 0) { showToast('ℹ️ No data to clear', 2000); return; }
+    if (!confirm('⚠️ Clear ALL local data? This will NOT delete from Google Sheet or Drive.')) return;
+    annotations = [];
+    saveData();
+    showToast('🗑️ All local data cleared! Sheet & Drive unchanged.', 2500);
+}
 
-            if (!bFile || !aFile) { showToast('❌ Select both images!', 3000); return; }
-            if (!rid) { showToast('❌ Enter Room ID!', 3000); return; }
+// ===== Render Table =====
+function renderTable() {
+    if (annotations.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="empty-msg">No data yet. Upload &amp; submit!</td></tr>`;
+        totalCount.textContent = '0';
+        return;
+    }
+    let html = '';
+    annotations.forEach((a, i) => {
+        const ts = a.timestamp ? a.timestamp.replace('T', ' ').slice(0, 19) : '';
+        html += `
+            <tr>
+                <td>${i+1}</td>
+                <td>${a.roll}</td>
+                <td>${a.roomType}</td>
+                <td>${a.roomId}</td>
+                <td>${a.camera}</td>
+                <td><img src="${a.before}" alt="before" loading="lazy" /></td>
+                <td><img src="${a.after}" alt="after" loading="lazy" /></td>
+                <td>${a.changeType}</td>
+                <td>${a.objectClass}</td>
+                <td style="font-size:10px;">${ts}</td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+    totalCount.textContent = annotations.length;
+}
 
-            const beforeData = await readFileAsBase64(bFile);
-            const afterData = await readFileAsBase64(aFile);
+// ===== Export CSV =====
+function exportCSV() {
+    if (annotations.length === 0) { showToast('No data', 2000); return; }
+    const headers = ['#', 'Roll', 'RoomType', 'RoomID', 'Cam', 'Before', 'After', 'ChangeType', 'ObjectType',
+        'Timestamp', 'FolderPath'
+    ];
+    const rows = annotations.map((a, i) => [
+        i + 1,
+        a.roll,
+        a.roomType,
+        a.roomId,
+        a.camera,
+        a.beforeName,
+        a.afterName,
+        a.changeType,
+        a.objectClass,
+        a.timestamp || '',
+        `ML_Dataset_Images/${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`
+    ]);
+    let csv = headers.join(',') + '\n';
+    rows.forEach(row => {
+        const escaped = row.map(c => typeof c === 'string' && (c.includes(',') || c.includes('"')) ?
+            `"${c.replace(/"/g, '""')}"` : c);
+        csv += escaped.join(',') + '\n';
+    });
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `dataset_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+    showToast('📥 CSV downloaded!', 2000);
+}
 
-            const objectTypeVal = objectClass.value;
-            const changeTypeVal = changeType.value;
-            const beforeName = generateFileName('before', objectTypeVal, changeTypeVal);
-            const afterName = generateFileName('after', objectTypeVal, changeTypeVal);
+// ===== Export ZIP =====
+function exportZIP() {
+    if (annotations.length === 0) { showToast('No data', 2000); return; }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    script.onload = function() {
+        const zip = new JSZip();
+        const root = zip.folder('ML_Dataset_Images');
 
-            const entry = {
-                id: Date.now(),
-                roll: rollVal,
-                roomType: roomType.value,
-                roomId: rid,
-                camera: cameraPos.value,
-                before: beforeData,
-                after: afterData,
-                beforeName: beforeName,
-                afterName: afterName,
-                changeType: changeTypeVal,
-                objectClass: objectTypeVal,
-                timestamp: new Date().toISOString()
-            };
-
-            annotations.push(entry);
-            saveData();
-
-            if (SCRIPT_URL) {
-                try {
-                    const payload = {
-                        roll: entry.roll,
-                        roomType: entry.roomType,
-                        roomId: entry.roomId,
-                        camera: entry.camera,
-                        beforeName: entry.beforeName,
-                        afterName: entry.afterName,
-                        changeType: entry.changeType,
-                        objectClass: entry.objectClass,
-                        beforeImage: entry.before,
-                        afterImage: entry.after,
-                        folderPath: `ML_Dataset_Images/${entry.roomType}/${entry.roomId}/${entry.camera}/${entry.changeType}/${entry.objectClass}`
-                    };
-
-                    await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    showToast('✅ Saved & Synced!', 2000);
-                } catch (e) {
-                    showToast('⚠️ Saved locally, sync failed', 3000);
-                }
-            } else {
-                showToast('✅ Saved locally!', 2000);
-            }
-
-            beforeInput.value = '';
-            afterInput.value = '';
-            beforePreview.classList.remove('show');
-            beforePreview.src = '';
-            beforeFileName.textContent = '';
-            afterPreview.classList.remove('show');
-            afterPreview.src = '';
-            afterFileName.textContent = '';
-            roomId.value = '';
-        }
-
-        // ===== Clear All (Local Only) =====
-        function clearAllLocal() {
-            if (annotations.length === 0) {
-                showToast('ℹ️ No data to clear', 2000);
-                return;
-            }
-            if (!confirm('⚠️ Clear ALL local data? This will NOT delete from Google Sheet or Drive.')) return;
-
-            annotations = [];
-            saveData();
-            showToast('🗑️ All local data cleared! Sheet & Drive unchanged.', 2500);
-        }
-
-        // ===== Render Table (no ImageID, no delete button) =====
-        function renderTable() {
-            if (annotations.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="empty-msg">No data yet. Upload &amp; submit!</td></tr>`;
-                totalCount.textContent = '0';
-                return;
-            }
-            let html = '';
-            annotations.forEach((a, i) => {
-                const ts = a.timestamp ? a.timestamp.replace('T', ' ').slice(0, 19) : '';
-                html += `
-                    <tr>
-                        <td>${i+1}</td>
-                        <td>${a.roll}</td>
-                        <td>${a.roomType}</td>
-                        <td>${a.roomId}</td>
-                        <td>${a.camera}</td>
-                        <td><img src="${a.before}" alt="before" loading="lazy" /></td>
-                        <td><img src="${a.after}" alt="after" loading="lazy" /></td>
-                        <td>${a.changeType}</td>
-                        <td>${a.objectClass}</td>
-                        <td style="font-size:10px;">${ts}</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-            totalCount.textContent = annotations.length;
-        }
-
-        // ===== Export CSV =====
-        function exportCSV() {
-            if (annotations.length === 0) { showToast('No data', 2000); return; }
-            const headers = ['#', 'Roll', 'RoomType', 'RoomID', 'Cam', 'Before', 'After', 'ChangeType', 'ObjectType',
-                'Timestamp', 'FolderPath'
-            ];
-            const rows = annotations.map((a, i) => [
+        const headers = ['#', 'Roll', 'RoomType', 'RoomID', 'Cam', 'Before', 'After', 'ChangeType', 'ObjectType',
+            'Timestamp'
+        ];
+        let csv = headers.join(',') + '\n';
+        annotations.forEach((a, i) => {
+            const row = [
                 i + 1,
                 a.roll,
                 a.roomType,
@@ -1169,113 +1004,68 @@
                 a.afterName,
                 a.changeType,
                 a.objectClass,
-                a.timestamp || '',
-                `ML_Dataset_Images/${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`
-            ]);
-            let csv = headers.join(',') + '\n';
-            rows.forEach(row => {
-                const escaped = row.map(c => typeof c === 'string' && (c.includes(',') || c.includes('"')) ?
-                    `"${c.replace(/"/g, '""')}"` : c);
-                csv += escaped.join(',') + '\n';
-            });
-            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                a.timestamp || ''
+            ];
+            const escaped = row.map(c => typeof c === 'string' && (c.includes(',') || c.includes('"')) ?
+                `"${c.replace(/"/g, '""')}"` : c);
+            csv += escaped.join(',') + '\n';
+        });
+        root.file('annotations.csv', '\uFEFF' + csv);
+
+        annotations.forEach((a) => {
+            const folder = root.folder(`${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`);
+            const bBlob = dataURLtoBlob(a.before);
+            folder.file(a.beforeName, bBlob);
+            const aBlob = dataURLtoBlob(a.after);
+            folder.file(a.afterName, aBlob);
+        });
+
+        zip.generateAsync({ type: 'blob' }).then(function(content) {
             const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `dataset_${new Date().toISOString().slice(0,10)}.csv`;
+            link.href = URL.createObjectURL(content);
+            link.download = `ML_Dataset_${new Date().toISOString().slice(0,10)}.zip`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            showToast('📥 CSV downloaded!', 2000);
-        }
-
-        // ===== Export ZIP =====
-        function exportZIP() {
-            if (annotations.length === 0) { showToast('No data', 2000); return; }
-
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-            script.onload = function() {
-                const zip = new JSZip();
-                const root = zip.folder('ML_Dataset_Images');
-
-                const headers = ['#', 'Roll', 'RoomType', 'RoomID', 'Cam', 'Before', 'After', 'ChangeType', 'ObjectType',
-                    'Timestamp'
-                ];
-                let csv = headers.join(',') + '\n';
-                annotations.forEach((a, i) => {
-                    const row = [
-                        i + 1,
-                        a.roll,
-                        a.roomType,
-                        a.roomId,
-                        a.camera,
-                        a.beforeName,
-                        a.afterName,
-                        a.changeType,
-                        a.objectClass,
-                        a.timestamp || ''
-                    ];
-                    const escaped = row.map(c => typeof c === 'string' && (c.includes(',') || c.includes('"')) ?
-                        `"${c.replace(/"/g, '""')}"` : c);
-                    csv += escaped.join(',') + '\n';
-                });
-                root.file('annotations.csv', '\uFEFF' + csv);
-
-                annotations.forEach((a) => {
-                    const folder = root.folder(`${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`);
-                    const bBlob = dataURLtoBlob(a.before);
-                    folder.file(a.beforeName, bBlob);
-                    const aBlob = dataURLtoBlob(a.after);
-                    folder.file(a.afterName, aBlob);
-                });
-
-                zip.generateAsync({ type: 'blob' }).then(function(content) {
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(content);
-                    link.download = `ML_Dataset_${new Date().toISOString().slice(0,10)}.zip`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    URL.revokeObjectURL(link.href);
-                    showToast('📦 ZIP downloaded!', 3000);
-                });
-            };
-            document.head.appendChild(script);
-        }
-
-        function dataURLtoBlob(dataURL) {
-            const arr = dataURL.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) { u8arr[n] = bstr.charCodeAt(n); }
-            return new Blob([u8arr], { type: mime });
-        }
-
-        // ===== Event Listeners =====
-        submitBtn.addEventListener('click', submitAnnotation);
-        clearAllBtn.addEventListener('click', clearAllLocal);
-        exportCsvBtn.addEventListener('click', exportCSV);
-        exportZipBtn.addEventListener('click', exportZIP);
-        rollSelect.addEventListener('change', saveRollPreference);
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                e.preventDefault();
-                submitAnnotation();
-            }
+            showToast('📦 ZIP downloaded!', 3000);
         });
+    };
+    document.head.appendChild(script);
+}
 
-        // ===== Init =====
-        loadRollPreference();
-        loadData();
-        updateFolderDisplay();
-        console.log('🏠 Scene Change Dataset loaded.');
-        console.log(`📋 ${annotations.length} entries.`);
-        console.log('ℹ️ Clear All removes only local data. Sheet & Drive remain unchanged.');
-        console.log('ℹ️ ImageID is hidden – data is synced to Google Sheet.');
-    </script>
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) { u8arr[n] = bstr.charCodeAt(n); }
+    return new Blob([u8arr], { type: mime });
+}
+
+// ===== Event Listeners =====
+submitBtn.addEventListener('click', submitAnnotation);
+clearAllBtn.addEventListener('click', clearAllLocal);
+exportCsvBtn.addEventListener('click', exportCSV);
+exportZipBtn.addEventListener('click', exportZIP);
+rollSelect.addEventListener('change', saveRollPreference);
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        submitAnnotation();
+    }
+});
+
+// ===== Init =====
+loadRollPreference();
+loadData();
+updateFolderDisplay();
+console.log('🏠 Scene Change Dataset loaded.');
+console.log(`📋 ${annotations.length} entries.`);
+console.log('ℹ️ Clear All removes only local data. Sheet & Drive remain unchanged.');
+console.log('ℹ️ Filename now uses SAME random number for before & after pairs.');
+</script>
 </body>
 </html>
