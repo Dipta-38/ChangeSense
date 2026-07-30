@@ -29,8 +29,6 @@
             --sync-ok-text: #276749;
             --sync-pending-bg: #fefcbf;
             --sync-pending-text: #975a16;
-            --delete-color: #fc8181;
-            --delete-hover: #f56565;
             --primary: #48bb78;
             --primary-hover: #38a169;
             --success: #4299e1;
@@ -66,8 +64,6 @@
             --sync-ok-text: #c6f6d5;
             --sync-pending-bg: #975a16;
             --sync-pending-text: #fefcbf;
-            --delete-color: #fc8181;
-            --delete-hover: #f56565;
         }
 
         /* ===== RESET & BASE ===== */
@@ -864,12 +860,11 @@
     <script>
         // ============================================================
         //  JAVASCRIPT – Full CRUD + Google Sheet Sync + CSV + ZIP Export
-        //  + Theme Toggle + Click whole block to upload
-        //  + Clear All (Local Only - does NOT delete from Sheet/Drive)
+        //  No ImageID column, no Delete button – just data display
         // ============================================================
 
         // ===== CONFIG =====
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4v78WtCcwdMcqGy96uYVhbi_sVPYZimWQZ2OyLPkACpVceGGsIdmu7b8uIL4BysDBEA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq7OH_LijJSPysbvOI4Xp-b_9azcTDBVffsEv7FzewcBARtSfZ4jHu1tp2swhUPHQBGg/exec";
 
         // ===== DOM refs =====
         const rollSelect = document.getElementById('rollSelect');
@@ -911,7 +906,6 @@
             setTheme(next);
         }
 
-        // Load saved theme
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
 
@@ -942,7 +936,6 @@
             folderPathDisplay.textContent = getFolderPath();
         }
 
-        // Update folder display on any change
         [roomType, roomId, cameraPos, changeType, objectClass].forEach(el => {
             el.addEventListener('change', updateFolderDisplay);
             if (el.tagName === 'INPUT') {
@@ -964,7 +957,7 @@
         // ===== Load/Save localStorage =====
         function loadData() {
             try {
-                const raw = localStorage.getItem('scene_annotations_v8');
+                const raw = localStorage.getItem('scene_annotations_v10');
                 annotations = raw ? JSON.parse(raw) : [];
             } catch (e) { annotations = []; }
             renderTable();
@@ -972,7 +965,7 @@
         }
 
         function saveData() {
-            localStorage.setItem('scene_annotations_v8', JSON.stringify(annotations));
+            localStorage.setItem('scene_annotations_v10', JSON.stringify(annotations));
             renderTable();
             updateSyncStatus();
         }
@@ -989,11 +982,11 @@
 
         // ===== Save selected Roll to localStorage =====
         function saveRollPreference() {
-            localStorage.setItem('selected_roll_v8', rollSelect.value);
+            localStorage.setItem('selected_roll_v10', rollSelect.value);
         }
 
         function loadRollPreference() {
-            const savedRoll = localStorage.getItem('selected_roll_v8');
+            const savedRoll = localStorage.getItem('selected_roll_v10');
             if (savedRoll) {
                 rollSelect.value = savedRoll;
             }
@@ -1131,7 +1124,7 @@
             showToast('🗑️ All local data cleared! Sheet & Drive unchanged.', 2500);
         }
 
-        // ===== Render Table =====
+        // ===== Render Table (no ImageID, no delete button) =====
         function renderTable() {
             if (annotations.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="10" class="empty-msg">No data yet. Upload &amp; submit!</td></tr>`;
@@ -1167,9 +1160,16 @@
                 'Timestamp', 'FolderPath'
             ];
             const rows = annotations.map((a, i) => [
-                i + 1, a.roll, a.roomType, a.roomId, a.camera,
-                a.beforeName, a.afterName,
-                a.changeType, a.objectClass, a.timestamp || '',
+                i + 1,
+                a.roll,
+                a.roomType,
+                a.roomId,
+                a.camera,
+                a.beforeName,
+                a.afterName,
+                a.changeType,
+                a.objectClass,
+                a.timestamp || '',
                 `ML_Dataset_Images/${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`
             ]);
             let csv = headers.join(',') + '\n';
@@ -1204,9 +1204,17 @@
                 ];
                 let csv = headers.join(',') + '\n';
                 annotations.forEach((a, i) => {
-                    const row = [i + 1, a.roll, a.roomType, a.roomId, a.camera,
-                        a.beforeName, a.afterName,
-                        a.changeType, a.objectClass, a.timestamp || ''
+                    const row = [
+                        i + 1,
+                        a.roll,
+                        a.roomType,
+                        a.roomId,
+                        a.camera,
+                        a.beforeName,
+                        a.afterName,
+                        a.changeType,
+                        a.objectClass,
+                        a.timestamp || ''
                     ];
                     const escaped = row.map(c => typeof c === 'string' && (c.includes(',') || c.includes('"')) ?
                         `"${c.replace(/"/g, '""')}"` : c);
@@ -1267,6 +1275,7 @@
         console.log('🏠 Scene Change Dataset loaded.');
         console.log(`📋 ${annotations.length} entries.`);
         console.log('ℹ️ Clear All removes only local data. Sheet & Drive remain unchanged.');
+        console.log('ℹ️ ImageID is hidden – data is synced to Google Sheet.');
     </script>
 </body>
 </html>
