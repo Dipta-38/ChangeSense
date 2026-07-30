@@ -819,6 +819,7 @@
         <!-- Buttons -->
         <div class="btn-group">
             <button class="btn btn-primary" id="submitBtn">💾 Submit</button>
+            <button class="btn btn-danger" id="clearAllBtn">🗑️ Clear All (Local Only)</button>
             <button class="btn btn-success" id="exportCsvBtn">📥 CSV</button>
             <button class="btn btn-warning" id="exportZipBtn">📦 ZIP</button>
         </div>
@@ -853,7 +854,7 @@
         </div>
 
         <div class="footer-note">
-            💡 Data stored locally + synced to Google Sheet. ZIP exports with folder structure.
+            💡 Data stored locally + synced to Google Sheet. <strong>Clear All</strong> removes only your local data (Sheet & Drive remain unchanged).
         </div>
     </div>
 
@@ -864,7 +865,7 @@
         // ============================================================
         //  JAVASCRIPT – Full CRUD + Google Sheet Sync + CSV + ZIP Export
         //  + Theme Toggle + Click whole block to upload
-        //  NO DELETE BUTTON & NO CLEAR ALL
+        //  + Clear All (Local Only - does NOT delete from Sheet/Drive)
         // ============================================================
 
         // ===== CONFIG =====
@@ -886,6 +887,7 @@
         const beforeBox = document.getElementById('beforeBox');
         const afterBox = document.getElementById('afterBox');
         const submitBtn = document.getElementById('submitBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
         const exportCsvBtn = document.getElementById('exportCsvBtn');
         const exportZipBtn = document.getElementById('exportZipBtn');
         const tbody = document.getElementById('dataTableBody');
@@ -1116,6 +1118,19 @@
             roomId.value = '';
         }
 
+        // ===== Clear All (Local Only) =====
+        function clearAllLocal() {
+            if (annotations.length === 0) {
+                showToast('ℹ️ No data to clear', 2000);
+                return;
+            }
+            if (!confirm('⚠️ Clear ALL local data? This will NOT delete from Google Sheet or Drive.')) return;
+
+            annotations = [];
+            saveData();
+            showToast('🗑️ All local data cleared! Sheet & Drive unchanged.', 2500);
+        }
+
         // ===== Render Table =====
         function renderTable() {
             if (annotations.length === 0) {
@@ -1233,6 +1248,7 @@
 
         // ===== Event Listeners =====
         submitBtn.addEventListener('click', submitAnnotation);
+        clearAllBtn.addEventListener('click', clearAllLocal);
         exportCsvBtn.addEventListener('click', exportCSV);
         exportZipBtn.addEventListener('click', exportZIP);
         rollSelect.addEventListener('change', saveRollPreference);
@@ -1250,6 +1266,7 @@
         updateFolderDisplay();
         console.log('🏠 Scene Change Dataset loaded.');
         console.log(`📋 ${annotations.length} entries.`);
+        console.log('ℹ️ Clear All removes only local data. Sheet & Drive remain unchanged.');
     </script>
 </body>
 </html>
