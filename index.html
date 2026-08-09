@@ -691,7 +691,7 @@
 // ============================================================
 
 // ===== CONFIG =====
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzb1WdymB9Ig-Uf-8jSR1K2LGXClmm8bmOxqIHx8fkMUPLl7X293dirrFDX4t_RK0m9TQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRNIFj-QdRWovYoaUD63fUlUVSm7LmDFrZ-_SFA0e9Bcun7TjmEQcvIwlZa02GD_jtug/exec";
 
 // ===== DOM refs =====
 const rollSelect = document.getElementById('rollSelect');
@@ -927,13 +927,14 @@ function createThumbnail(dataUrl, maxWidth = 100, maxHeight = 100) {
 // ================================================================
 //  FILENAME GENERATOR WITH COMMON RANDOM
 // ================================================================
-function generateFileName(prefix, objectTypeVal, roomTypeVal, roomIdVal, cameraVal, pairId) {
+function generateFileName(prefix, changeTypeVal, objectTypeVal, roomTypeVal, roomIdVal, cameraVal, pairId) {
+    const changeName = cleanFilePart(changeTypeVal);
     const objectName = cleanFilePart(objectTypeVal);
     const roomTypeName = cleanFilePart(roomTypeVal);
     const roomName = cleanFilePart(roomIdVal);
     const cameraNumber = getCameraNumber(cameraVal);
 
-    return `${prefix}-${objectName}-${roomTypeName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
+    return `${prefix}-${changeName}-${objectName}-${roomTypeName}-cam-${cameraNumber}-${roomName}-${pairId}.jpg`;
 }
 
 // ===== Submit =====
@@ -959,11 +960,17 @@ async function submitAnnotation() {
         const pairIds = annotations.filter(a => String(a.roll) === String(rollVal)).map(a => parseInt(a.pairId, 10)).filter(Number.isFinite);
         const pairId = String(pairIds.length ? Math.max(...pairIds) + 1 : 1).padStart(3, '0');
         const objectName = objectTypeVal.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        const roomTypeName = roomType.value.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
         const roomName = rid.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        const changeName = changeTypeVal.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
         const cameraMatch = String(cameraPos.value).match(/(\d+)$/);
         const cameraNumber = cameraMatch ? cameraMatch[1] : '1';
-        const beforeName = `before-${objectName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
-        const afterName = `after-${objectName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
+
+        // Filename format:
+        // before-add-bag-bedroom-cam-1-b38-1.jpg
+        // after-add-bag-bedroom-cam-1-b38-1.jpg
+        const beforeName = `before-${changeName}-${objectName}-${roomTypeName}-cam-${cameraNumber}-${roomName}-${pairId}.jpg`;
+        const afterName = `after-${changeName}-${objectName}-${roomTypeName}-cam-${cameraNumber}-${roomName}-${pairId}.jpg`;
 
         const entry = {
             id: Date.now(),
