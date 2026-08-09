@@ -574,44 +574,42 @@
         <div class="form-group">
             <label>📦 Object</label>
             <select id="objectClass">
-
-<option value="Bag">Bag</option>
-<option value="Basket">Basket</option>
-<option value="Book">Book</option>
-<option value="Bottle">Bottle</option>
-<option value="Bowl">Bowl</option>
-<option value="Box">Box</option>
-<option value="Bucket">Bucket</option>
-<option value="Calculator">Calculator</option>
-<option value="Chair">Chair</option>
-<option value="Clock">Clock</option>
-<option value="Cup">Cup</option>
-<option value="Desk">Desk</option>
-<option value="Duster">Duster</option>
-<option value="Stand Fan">Fan</option>
-<option value="Food">Food</option>
-<option value="Footwear">Footwear</option>
-<option value="Glass">Glass</option>
-<option value="Jar">Jar</option>
-<option value="Keyboard">Keyboard</option>
-<option value="Laptop">Laptop</option>
-<option value="Marker">Marker</option>
-<option value="Mouse">Mouse</option>
-<option value="Mug">Mug</option>
-<option value="Electrical Switch">Electrical Switch</option>
-<option value="Notebook">Notebook</option>
-<option value="Pen stand">Pen stand</option>
-<option value="Phone">Phone</option>
-<option value="Pillow">Pillow</option>
-<option value="Pot">Pot</option>
-<option value="Rack">Rack</option>
-<option value="Table">Table</option>
-<option value="Table Lamp">Table Lamp</option>
-<option value="Tissue Box">Tissue Box</option>
-<option value="Towel">Towel</option>
-<option value="Umbrella">Umbrella</option>
-<option value="Wall Photo">Wall Photo</option>
-                
+                <option value="Bag">Bag</option>
+                <option value="Basket">Basket</option>
+                <option value="Book">Book</option>
+                <option value="Bottle">Bottle</option>
+                <option value="Bowl">Bowl</option>
+                <option value="Box">Box</option>
+                <option value="Bucket">Bucket</option>
+                <option value="Calculator">Calculator</option>
+                <option value="Can">Can</option>
+                <option value="Chair">Chair</option>
+                <option value="Cup">Cup</option>
+                <option value="Desk">Desk</option>
+                <option value="Drawer">Drawer</option>
+                <option value="Duster">Duster</option>
+                <option value="Stand Fan">Stand Fan</option>
+                <option value="Food">Food</option>
+                <option value="Footwear">Footwear</option>
+                <option value="Glass">Glass</option>
+                <option value="Keyboard">Keyboard</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Marker">Marker</option>
+                <option value="Mouse">Mouse</option>
+                <option value="Mug">Mug</option>
+                <option value="Multiplug">Multiplug</option>
+                <option value="Notebook">Notebook</option>
+                <option value="Pen Stand">Pen Stand</option>
+                <option value="Phone">Phone</option>
+                <option value="Pillow">Pillow</option>
+                <option value="Pot">Pot</option>
+                <option value="Rack">Rack</option>
+                <option value="Table">Table</option>
+                <option value="Table Lamp">Table Lamp</option>
+                <option value="Tissue Box">Tissue Box</option>
+                <option value="Towel">Towel</option>
+                <option value="Umbrella">Umbrella</option>
+                <option value="Wall Photo">Wall Photo</option>
             </select>
         </div>
     </div>
@@ -649,7 +647,7 @@
     <!-- Status -->
     <div class="status-bar">
         <span>📋 Total: <span class="count" id="totalCount">0</span></span>
-        <span>📁 <span id="folderPathDisplay">Bedroom/B01-1/C1/Add/Mug</span></span>
+        <span>📁 <span id="folderPathDisplay">ML_Dataset_Images/2107036</span></span>
     </div>
 
     <!-- Table -->
@@ -693,7 +691,7 @@
 // ============================================================
 
 // ===== CONFIG =====
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJm0m-bfaw4QNHlxGqy6pHHKp4v6CZ-qHZbzjNdmKKvCORLfe0vrEmPF-aX0Ox6spdRw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRxzqQqkHQxDvUcqR61vTfGM9klj5qkPj-xzH-EoyQGwtXts1wvm9uJBnqkfj-b8xWcA/exec";
 
 // ===== DOM refs =====
 const rollSelect = document.getElementById('rollSelect');
@@ -810,7 +808,7 @@ function showToast(msg, duration = 3000) {
 }
 
 function getFolderPath() {
-    return `${roomType.value}/${roomId.value.trim() || 'Unknown'}/${cameraPos.value}/${changeType.value}/${objectClass.value}`;
+    return `ML_Dataset_Images/${rollSelect.value}`;
 }
 function updateFolderDisplay() {
     folderPathDisplay.textContent = getFolderPath();
@@ -929,16 +927,13 @@ function createThumbnail(dataUrl, maxWidth = 100, maxHeight = 100) {
 // ================================================================
 //  FILENAME GENERATOR WITH COMMON RANDOM
 // ================================================================
-function generateFileName(prefix, objectTypeVal, changeTypeVal, random) {
-    const now = new Date();
-    const dateStr = now.getFullYear() +
-        String(now.getMonth() + 1).padStart(2, '0') +
-        String(now.getDate()).padStart(2, '0') + '_' +
-        String(now.getHours()).padStart(2, '0') +
-        String(now.getMinutes()).padStart(2, '0') +
-        String(now.getSeconds()).padStart(2, '0');
-    const ms = String(now.getMilliseconds()).padStart(3, '0');
-    return `${prefix}_${objectTypeVal}_${changeTypeVal}_${dateStr}_${ms}_${random}.jpg`;
+function generateFileName(prefix, objectTypeVal, roomTypeVal, roomIdVal, cameraVal, pairId) {
+    const objectName = cleanFilePart(objectTypeVal);
+    const roomTypeName = cleanFilePart(roomTypeVal);
+    const roomName = cleanFilePart(roomIdVal);
+    const cameraNumber = getCameraNumber(cameraVal);
+
+    return `${prefix}-${objectName}-${roomTypeName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
 }
 
 // ===== Submit =====
@@ -961,12 +956,18 @@ async function submitAnnotation() {
         const objectTypeVal = objectClass.value;
         const changeTypeVal = changeType.value;
 
-        const commonRandom = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-        const beforeName = generateFileName('before', objectTypeVal, changeTypeVal, commonRandom);
-        const afterName = generateFileName('after', objectTypeVal, changeTypeVal, commonRandom);
+        const pairIds = annotations.filter(a => String(a.roll) === String(rollVal)).map(a => parseInt(a.pairId, 10)).filter(Number.isFinite);
+        const pairId = String(pairIds.length ? Math.max(...pairIds) + 1 : 1).padStart(3, '0');
+        const objectName = objectTypeVal.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        const roomName = rid.trim().replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        const cameraMatch = String(cameraPos.value).match(/(\d+)$/);
+        const cameraNumber = cameraMatch ? cameraMatch[1] : '1';
+        const beforeName = `before-${objectName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
+        const afterName = `after-${objectName}-cam-${cameraNumber}-${roomName}_${pairId}.jpg`;
 
         const entry = {
             id: Date.now(),
+            pairId: pairId,
             roll: rollVal,
             roomType: roomType.value,
             roomId: rid,
@@ -1001,7 +1002,7 @@ async function submitAnnotation() {
                     objectClass: entry.objectClass,
                     beforeImage: entry.before,
                     afterImage: entry.after,
-                    folderPath: `ML_Dataset_Images/${entry.roomType}/${entry.roomId}/${entry.camera}/${entry.changeType}/${entry.objectClass}`
+                    folderPath: `ML_Dataset_Images/${entry.roll}`
                 };
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
@@ -1108,7 +1109,7 @@ function exportCSV() {
         a.changeType,
         a.objectClass,
         a.timestamp || '',
-        `ML_Dataset_Images/${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`
+        `ML_Dataset_Images/${a.roll}`
     ]);
     let csv = headers.join(',') + '\n';
     rows.forEach(row => {
@@ -1160,7 +1161,7 @@ function exportZIP() {
         root.file('annotations.csv', '\uFEFF' + csv);
 
         annotations.forEach((a) => {
-            const folder = root.folder(`${a.roomType}/${a.roomId}/${a.camera}/${a.changeType}/${a.objectClass}`);
+            const folder = root.folder(String(a.roll));
             const bBlob = dataURLtoBlob(a.before);
             folder.file(a.beforeName, bBlob);
             const aBlob = dataURLtoBlob(a.after);
