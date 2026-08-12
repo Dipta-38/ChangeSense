@@ -387,86 +387,7 @@ h1 {
 
 
 /* ============================================================
-   FORM
-============================================================ */
-
-.form-row {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(150px, 1fr)
-        );
-
-    gap: 12px;
-
-    margin-bottom: 14px;
-}
-
-
-.form-group {
-
-    display: flex;
-
-    flex-direction: column;
-
-    min-width: 0;
-}
-
-
-.form-group label {
-
-    font-weight: 600;
-
-    font-size:
-        clamp(11px, 1.8vw, 14px);
-
-    color: var(--text-primary);
-
-    margin-bottom: 3px;
-}
-
-
-.form-group select,
-.form-group input {
-
-    padding: 8px 10px;
-
-    border:
-        1px solid var(--border-color);
-
-    border-radius: 8px;
-
-    background: var(--bg-input);
-
-    color: var(--text-primary);
-
-    font-size:
-        clamp(12px, 1.8vw, 14px);
-
-    width: 100%;
-
-    min-height: 40px;
-}
-
-
-.form-group select:focus,
-.form-group input:focus {
-
-    outline: none;
-
-    border-color: #4299e1;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(66,153,225,0.2);
-}
-
-
-/* ============================================================
-   IMAGE UPLOAD
+   IMAGE UPLOAD AREA (TOP)
 ============================================================ */
 
 .image-upload-area {
@@ -601,6 +522,85 @@ h1 {
     word-break: break-all;
 
     width: 100%;
+}
+
+
+/* ============================================================
+   FORM
+============================================================ */
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(150px, 1fr)
+        );
+
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.form-group label {
+
+    font-weight: 600;
+
+    font-size:
+        clamp(11px, 1.8vw, 14px);
+
+    color: var(--text-primary);
+
+    margin-bottom: 3px;
+}
+
+
+.form-group select,
+.form-group input {
+
+    padding: 8px 10px;
+
+    border:
+        1px solid var(--border-color);
+
+    border-radius: 8px;
+
+    background: var(--bg-input);
+
+    color: var(--text-primary);
+
+    font-size:
+        clamp(12px, 1.8vw, 14px);
+
+    width: 100%;
+
+    min-height: 40px;
+}
+
+
+.form-group select:focus,
+.form-group input:focus {
+
+    outline: none;
+
+    border-color: #4299e1;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(66,153,225,0.2);
 }
 
 
@@ -1031,12 +1031,114 @@ td img {
 
 
 <!-- ============================================================
-     FORM
+     SECTION: IMAGE UPLOAD (TOP)
 ============================================================ -->
 
 <div class="section-title">
 
-    📝 Enter Data &amp; Upload Images
+    📸 Step 1: Select & Process Images
+
+</div>
+
+
+<div class="image-upload-area">
+
+
+    <!-- BEFORE -->
+
+    <div
+        class="image-box"
+        id="beforeBox">
+
+        <label>
+            📸 Before
+        </label>
+
+        <button
+            class="upload-btn"
+            type="button">
+
+            Choose File
+
+        </button>
+
+        <input
+            type="file"
+            id="beforeInput"
+            accept="image/*">
+
+        <img
+            id="beforePreview"
+            class="image-preview"
+            alt="Before preview">
+
+        <div
+            id="beforeFileName"
+            class="file-name">
+        </div>
+
+    </div>
+
+
+    <!-- AFTER -->
+
+    <div
+        class="image-box"
+        id="afterBox">
+
+        <label>
+            📸 After
+        </label>
+
+        <button
+            class="upload-btn"
+            type="button">
+
+            Choose File
+
+        </button>
+
+        <input
+            type="file"
+            id="afterInput"
+            accept="image/*">
+
+        <img
+            id="afterPreview"
+            class="image-preview"
+            alt="After preview">
+
+        <div
+            id="afterFileName"
+            class="file-name">
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="btn-group">
+
+    <button
+        class="btn btn-secondary"
+        id="processBtn"
+        type="button">
+
+        🔄 Compress Images
+
+    </button>
+
+</div>
+
+
+<!-- ============================================================
+     SECTION: FORM DATA
+============================================================ -->
+
+<div class="section-title">
+
+    📝 Step 2: Enter Data &amp; Upload Images
 
 </div>
 
@@ -1276,88 +1378,7 @@ td img {
 
 
 <!-- ============================================================
-     IMAGE UPLOAD
-============================================================ -->
-
-<div class="image-upload-area">
-
-
-    <!-- BEFORE -->
-
-    <div
-        class="image-box"
-        id="beforeBox">
-
-        <label>
-            📸 Before
-        </label>
-
-        <button
-            class="upload-btn"
-            type="button">
-
-            Choose File
-
-        </button>
-
-        <input
-            type="file"
-            id="beforeInput"
-            accept="image/*">
-
-        <img
-            id="beforePreview"
-            class="image-preview"
-            alt="Before preview">
-
-        <div
-            id="beforeFileName"
-            class="file-name">
-        </div>
-
-    </div>
-
-
-    <!-- AFTER -->
-
-    <div
-        class="image-box"
-        id="afterBox">
-
-        <label>
-            📸 After
-        </label>
-
-        <button
-            class="upload-btn"
-            type="button">
-
-            Choose File
-
-        </button>
-
-        <input
-            type="file"
-            id="afterInput"
-            accept="image/*">
-
-        <img
-            id="afterPreview"
-            class="image-preview"
-            alt="After preview">
-
-        <div
-            id="afterFileName"
-            class="file-name">
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ============================================================
-     BUTTONS
+     BUTTONS (Submit, Clear, CSV, ZIP)
 ============================================================ -->
 
 <div class="btn-group">
@@ -1532,7 +1553,7 @@ td img {
 // ============================================================
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwfmyZnQLqKJXNvzqmDasTw2y1wgBkdleC9bHAhWSmm360EDkYUOAiZY3YOBezCOE-dwQ/exec";
+"https://script.google.com/macros/s/AKfycbzN6I39Ah2r6PnphZ4hT_MJUkJO8M4sqlGjSnD8dyC8s2qSTfPnBGjWFXjTyo8lGXZNhQ/exec";
 
 
 // ============================================================
@@ -1550,6 +1571,14 @@ const STORE_NAME =
 let db = null;
 
 let annotations = [];
+
+
+// ============================================================
+// STATE FOR COMPRESSED IMAGES
+// ============================================================
+
+let compressedBefore = null;
+let compressedAfter = null;
 
 
 // ============================================================
@@ -1629,6 +1658,11 @@ document.getElementById(
 const submitBtn =
 document.getElementById(
     "submitBtn"
+);
+
+const processBtn =
+document.getElementById(
+    "processBtn"
 );
 
 const clearAllBtn =
@@ -2056,76 +2090,29 @@ updateFolderPath();
 
 
 // ============================================================
-// GET NEXT PAIR NUMBER
-//
-// Example:
-//
-// 001
-// 002
-// 003
-//
-// IMPORTANT:
-// Sequence is per roll.
+// GET NEXT LOCAL SERIAL (matches Google Sheet ImageID)
 // ============================================================
 
-function getNextPairNumber(
-    roll
-) {
-
-    const existingNumbers =
-        annotations
-            .filter(
-                function(item) {
-
-                    return String(
-                        item.roll
-                    ) === String(
-                        roll
-                    );
-
-                }
-            )
-            .map(
-                function(item) {
-
-                    return parseInt(
-                        item.pairNumber,
-                        10
-                    );
-
-                }
-            )
-            .filter(
-                function(number) {
-
-                    return Number.isFinite(
-                        number
-                    );
-
-                }
-            );
-
-
-    if (
-        existingNumbers.length === 0
-    ) {
-
+function getNextLocalImageId() {
+    // Try to read from localStorage first
+    let current = localStorage.getItem('local_image_id');
+    if (current) {
+        const next = parseInt(current, 10) + 1;
+        localStorage.setItem('local_image_id', String(next));
+        return next;
+    } else {
+        // If no local storage, start from 1
+        localStorage.setItem('local_image_id', '1');
         return 1;
-
     }
-
-
-    return (
-        Math.max(
-            ...existingNumbers
-        ) + 1
-    );
-
 }
 
 
 // ============================================================
 // FILENAME GENERATOR
+//
+// USES SERIAL FROM LOCAL STORAGE
+// Same suffix as Google Sheet ImageID
 //
 // EXACT:
 //
@@ -2140,12 +2127,12 @@ function generateFilename(
     room,
     camera,
     roomIdValue,
-    pairNumber
+    serialNumber
 ) {
 
     const number =
         String(
-            pairNumber
+            serialNumber
         ).padStart(
             3,
             "0"
@@ -2189,47 +2176,68 @@ function generateFilename(
 
 
 // ============================================================
-// FILE -> BASE64
+// COMPRESS IMAGE (keep resolution, reduce file size)
 // ============================================================
 
-function fileToBase64(
-    file
-) {
-
-    return new Promise(
-        function(resolve, reject) {
-
-            const reader =
-                new FileReader();
-
-
-            reader.onload =
-                function() {
-
-                    resolve(
-                        reader.result
-                    );
-
-                };
-
-
-            reader.onerror =
-                function() {
-
-                    reject(
-                        reader.error
-                    );
-
-                };
+function compressImage(file, quality = 0.75) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                resolve(dataUrl);
+            };
+            img.onerror = reject;
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
 
 
-            reader.readAsDataURL(
-                file
-            );
+// ============================================================
+// PROCESS IMAGES (Compress both in parallel)
+// ============================================================
 
-        }
-    );
+async function processImages() {
+    const beforeFile = beforeInput.files[0];
+    const afterFile = afterInput.files[0];
 
+    if (!beforeFile || !afterFile) {
+        showToast("❌ Select both images first!", 3000);
+        return;
+    }
+
+    processBtn.disabled = true;
+    processBtn.textContent = "⏳ Compressing...";
+
+    try {
+        const [beforeData, afterData] = await Promise.all([
+            compressImage(beforeFile, 0.75),
+            compressImage(afterFile, 0.75)
+        ]);
+
+        compressedBefore = beforeData;
+        compressedAfter = afterData;
+
+        // Visual feedback
+        beforeFileName.textContent = beforeFile.name + " ✅";
+        afterFileName.textContent = afterFile.name + " ✅";
+
+        showToast("✅ Images processed! Ready to submit.", 2000);
+    } catch (error) {
+        showToast("❌ Processing failed: " + error.message, 4000);
+    } finally {
+        processBtn.disabled = false;
+        processBtn.textContent = "🔄 Compress Images";
+    }
 }
 
 
@@ -2300,6 +2308,10 @@ beforeInput.addEventListener(
             beforeFileName
         );
 
+        // Reset processed state when new files are selected
+        compressedBefore = null;
+        compressedAfter = null;
+
     }
 );
 
@@ -2313,6 +2325,10 @@ afterInput.addEventListener(
             afterPreview,
             afterFileName
         );
+
+        // Reset processed state when new files are selected
+        compressedBefore = null;
+        compressedAfter = null;
 
     }
 );
@@ -2387,7 +2403,7 @@ afterBox.addEventListener(
 
 
 // ============================================================
-// SUBMIT
+// SUBMIT (uses compressed data if available)
 // ============================================================
 
 async function submitData() {
@@ -2467,26 +2483,14 @@ async function submitData() {
     try {
 
         // -------------------------
-        // PAIR NUMBER
+        // SERIAL NUMBER (auto-increment, stored in localStorage)
         // -------------------------
 
-        const pairNumber =
-            getNextPairNumber(
-                roll
-            );
-
-
-        const pairId =
-            String(
-                pairNumber
-            ).padStart(
-                3,
-                "0"
-            );
+        const serialNumber = getNextLocalImageId();
 
 
         // -------------------------
-        // FILENAMES
+        // FILENAMES using serial
         // -------------------------
 
         const beforeName =
@@ -2497,7 +2501,7 @@ async function submitData() {
                 room,
                 camera,
                 roomIdValue,
-                pairNumber
+                serialNumber
             );
 
 
@@ -2509,7 +2513,7 @@ async function submitData() {
                 room,
                 camera,
                 roomIdValue,
-                pairNumber
+                serialNumber
             );
 
 
@@ -2525,18 +2529,22 @@ async function submitData() {
 
 
         // -------------------------
-        // BASE64
+        // USE COMPRESSED DATA OR COMPRESS NOW
         // -------------------------
 
-        const beforeData =
-            await fileToBase64(
-                beforeFile
-            );
+        let beforeData = compressedBefore;
+        let afterData = compressedAfter;
 
-        const afterData =
-            await fileToBase64(
-                afterFile
-            );
+        if (!beforeData || !afterData) {
+            showToast("⏳ Processing images...", 3000);
+            [beforeData, afterData] = await Promise.all([
+                compressImage(beforeFile, 0.75),
+                compressImage(afterFile, 0.75)
+            ]);
+            // Cache for potential reuse
+            compressedBefore = beforeData;
+            compressedAfter = afterData;
+        }
 
 
         // -------------------------
@@ -2553,11 +2561,8 @@ async function submitData() {
             serial:
                 annotations.length + 1,
 
-            pairNumber:
-                pairNumber,
-
-            pairId:
-                pairId,
+            serialNumber:
+                serialNumber,   // <-- store the serial number
 
             roll:
                 roll,
@@ -2639,15 +2644,6 @@ async function submitData() {
 
             action:
                 "save",
-
-            serial:
-                entry.serial,
-
-            pairNumber:
-                entry.pairNumber,
-
-            pairId:
-                entry.pairId,
 
             roll:
                 entry.roll,
@@ -2773,6 +2769,10 @@ async function submitData() {
 
         roomId.value =
             "";
+
+        // Reset compressed cache
+        compressedBefore = null;
+        compressedAfter = null;
 
 
     }
@@ -3032,6 +3032,9 @@ async function clearAllData() {
         await clearLocal();
 
         annotations = [];
+
+        // Reset the serial counter when clearing all data
+        localStorage.removeItem('local_image_id');
 
         await renderTable();
 
@@ -3589,6 +3592,11 @@ function loadJSZip() {
 // ============================================================
 // EVENT LISTENERS
 // ============================================================
+
+processBtn.addEventListener(
+    "click",
+    processImages
+);
 
 submitBtn.addEventListener(
     "click",
