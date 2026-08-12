@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Collection Calculator</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+        body {
+            background: #f0f4f8;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 28px;
+            color: #1a202c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #4a5568;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+        .badge {
+            background: #48bb78;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 15px;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        .form-group small {
+            display: block;
+            color: #718096;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .room-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .room-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #4299e1;
+        }
+        .room-item label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3748;
+            min-width: 70px;
+            cursor: pointer;
+        }
+        .room-item input[type="number"] {
+            flex: 1;
+            padding: 4px 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 13px;
+            width: 70px;
+            text-align: center;
+            background: white;
+        }
+        .room-item input[type="number"]:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        .room-item .quota-label {
+            font-size: 12px;
+            color: #718096;
+            margin-left: auto;
+        }
+        .object-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+        }
+        .object-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .object-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #4299e1;
+        }
+        .object-item label {
+            font-size: 13px;
+            color: #2d3748;
+            cursor: pointer;
+        }
+        .change-type-grid {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .change-type-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .change-type-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #4299e1;
+        }
+        .change-type-item label {
+            font-size: 14px;
+            color: #2d3748;
+            cursor: pointer;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.3);
+        }
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(72, 187, 120, 0.3);
+        }
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #f56565;
+        }
+        .btn-secondary {
+            background: #edf2f7;
+            color: #2d3748;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 10px 0;
+        }
+        .result-wrap {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+        .result-wrap.show {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            background: #edf2f7;
+            color: #2d3748;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+        .highlight {
+            font-weight: 700;
+            color: #2b6cb0;
+        }
+        .total-row {
+            background: #ebf8ff;
+            font-weight: 700;
+        }
+        .empty-msg {
+            text-align: center;
+            color: #a0aec0;
+            padding: 30px 0;
+            font-size: 15px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 999;
+            max-width: 90%;
+            text-align: center;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .footer-note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #a0aec0;
+            text-align: center;
+        }
+        .print-hide {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0 10px 0;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 16px;
+            }
+            .room-grid {
+                grid-template-columns: 1fr;
+            }
+            .object-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .btn-group {
+                flex-direction: column;
+            }
+            table {
+                font-size: 12px;
+            }
+            th,
+            td {
+                padding: 6px 10px;
+            }
+        }
+        @media print {
+            .print-hide {
+                display: none !important;
+            }
+            .result-wrap {
+                display: block !important;
+                border: none !important;
+            }
+            body {
+                padding: 0;
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            .toast {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+                <h1>📸 Data Collection Calculator</h1>
+                <div class="subtitle">
+                    Plan your image collection by room, change type &amp; object
+                    <span class="badge">7 Users</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ROOMS WITH CHECKBOX & QUOTA ===== -->
+        <div class="form-group">
+            <label>🏠 Select Rooms &amp; Set Quota</label>
+            <div class="room-grid" id="roomGrid">
+                <!-- dynamically filled -->
+            </div>
+            <small>Check rooms you want to collect images from. Enter quota for each selected room.</small>
+        </div>
+
+        <!-- ===== CHANGE TYPES WITH CHECKBOX ===== -->
+        <div class="form-group">
+            <label>🔄 Select Change Types</label>
+            <div class="change-type-grid" id="changeTypeGrid">
+                <div class="change-type-item">
+                    <input type="checkbox" class="change-type-checkbox" data-type="Add" checked />
+                    <label>Add</label>
+                </div>
+                <div class="change-type-item">
+                    <input type="checkbox" class="change-type-checkbox" data-type="Delete" checked />
+                    <label>Delete</label>
+                </div>
+                <div class="change-type-item">
+                    <input type="checkbox" class="change-type-checkbox" data-type="Move" checked />
+                    <label>Move</label>
+                </div>
+            </div>
+            <small>Select which change types you want to capture.</small>
+        </div>
+
+        <!-- ===== OBJECTS WITH CHECKBOX ===== -->
+        <div class="form-group">
+            <label>📦 Select Objects to Capture</label>
+            <div class="object-grid" id="objectGrid">
+                <!-- dynamically filled -->
+            </div>
+            <small>Only objects available in selected rooms are shown. Check objects you want to collect.</small>
+        </div>
+
+        <!-- ===== BUTTONS ===== -->
+        <div class="print-hide">
+            <button class="btn btn-primary" id="calculateBtn">🧮 Calculate Distribution</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Reset All</button>
+            <button class="btn btn-success" id="printBtn">🖨️ Print / Save as PDF</button>
+        </div>
+
+        <!-- ===== RESULT ===== -->
+        <div class="result-wrap" id="resultWrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Room</th>
+                        <th>Change Type</th>
+                        <th>Object</th>
+                        <th>Images to Capture</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                    <tr>
+                        <td colspan="5" class="empty-msg">Click "Calculate Distribution" to see results.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-note">💡 Selected objects will be distributed evenly across selected rooms and change types. Use <strong>Print / Save as PDF</strong> to download your plan.</div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ============================================================
+        // DATA
+        // ============================================================
+        // Practical object mapping for each room
+        const ROOM_OBJECTS = {
+            Bedroom: ['Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Bowl', 'Box', 'Bucket',
+                'Chair', 'Clock', 'Cup', 'Duster', 'Footwear', 'Glass', 'Jar',
+                'Laptop', 'Mug', 'Notebook', 'Pillow', 'Pot', 'Rack',
+                'Table', 'Table Lamp', 'Tissue Box', 'Towel', 'Umbrella', 'Wall Photo'
+            ],
+            Kitchen: ['Bag', 'Basket', 'Bottle', 'Bowl', 'Box', 'Bucket',
+                'Chair', 'Clock', 'Cup', 'Duster', 'Food', 'Glass', 'Jar', 'Knife',
+                'Mug', 'Pan', 'Plate', 'Pot', 'Rack', 'Spoon', 'Table', 'Tissue Box'
+            ],
+            Dining: ['Bag', 'Bottle', 'Bowl', 'Box', 'Chair', 'Cup', 'Duster', 'Glass',
+                'Jar', 'Mug', 'Plate', 'Pot', 'Table', 'Tissue Box'
+            ],
+            Corridor: ['Basket', 'Box', 'Bucket', 'Clock', 'Duster', 'Footwear',
+                'Rack', 'Table', 'Tissue Box', 'Umbrella', 'Wall Photo'
+            ],
+            Drawing: ['Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Box',
+                'Chair', 'Clock', 'Cup', 'Duster', 'Glass', 'Laptop', 'Mug',
+                'Notebook', 'Pillow', 'Pot', 'Rack', 'Table', 'Table Lamp',
+                'Tissue Box', 'Towel', 'Wall Photo'
+            ]
+        };
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const roomGrid = document.getElementById('roomGrid');
+        const objectGrid = document.getElementById('objectGrid');
+        const changeTypeGrid = document.getElementById('changeTypeGrid');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const printBtn = document.getElementById('printBtn');
+        const resultWrap = document.getElementById('resultWrap');
+        const resultBody = document.getElementById('resultBody');
+        const toast = document.getElementById('toast');
+
+        // ============================================================
+        // STATE
+        // ============================================================
+        let selectedRooms = {};
+        let selectedChangeTypes = ['Add', 'Delete', 'Move'];
+        let selectedObjects = [];
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function showToast(msg, duration = 3000) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._hide);
+            toast._hide = setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // ============================================================
+        // RENDER ROOMS
+        // ============================================================
+        function renderRooms() {
+            const roomNames = Object.keys(ROOM_OBJECTS);
+            let html = '';
+            roomNames.forEach(room => {
+                const checked = selectedRooms[room] !== undefined ? 'checked' : '';
+                const quota = selectedRooms[room] || '';
+                html += `
+                            <div class="room-item">
+                                <input type="checkbox" class="room-checkbox" data-room="${room}" ${checked} />
+                                <label>${room}</label>
+                                <input type="number" class="room-quota" data-room="${room}" value="${quota}" min="1" placeholder="quota" />
+                                <span class="quota-label">images</span>
+                            </div>
+                        `;
+            });
+            roomGrid.innerHTML = html;
+
+            // Event listeners for checkbox
+            document.querySelectorAll('.room-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const room = this.dataset.room;
+                    if (this.checked) {
+                        if (!selectedRooms[room]) {
+                            selectedRooms[room] = 0;
+                        }
+                    } else {
+                        delete selectedRooms[room];
+                    }
+                    renderObjects();
+                });
+            });
+
+            // Event listeners for label click (clicking label toggles checkbox)
+            document.querySelectorAll('.room-item label').forEach(label => {
+                label.addEventListener('click', function() {
+                    const checkbox = this.parentElement.querySelector('.room-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            });
+
+            // Event listeners for quota input
+            document.querySelectorAll('.room-quota').forEach(input => {
+                input.addEventListener('input', function() {
+                    const room = this.dataset.room;
+                    const val = parseInt(this.value) || 0;
+                    if (selectedRooms[room] !== undefined) {
+                        selectedRooms[room] = val;
+                    }
+                });
+            });
+        }
+
+        // ============================================================
+        // RENDER OBJECTS
+        // ============================================================
+        function renderObjects() {
+            const selectedRoomNames = Object.keys(selectedRooms);
+            if (selectedRoomNames.length === 0) {
+                objectGrid.innerHTML = '<p style="color:#a0aec0; padding:10px 0;">Please select at least one room to see available objects.</p>';
+                selectedObjects = [];
+                return;
+            }
+
+            // Get unique objects from selected rooms
+            const availableSet = new Set();
+            selectedRoomNames.forEach(room => {
+                if (ROOM_OBJECTS[room]) {
+                    ROOM_OBJECTS[room].forEach(obj => availableSet.add(obj));
+                }
+            });
+            const available = Array.from(availableSet).sort();
+
+            // Render checkboxes
+            let html = '';
+            available.forEach(obj => {
+                const checked = selectedObjects.includes(obj) ? 'checked' : '';
+                html += `
+                            <div class="object-item">
+                                <input type="checkbox" class="object-checkbox" data-object="${obj}" ${checked} />
+                                <label>${obj}</label>
+                            </div>
+                        `;
+            });
+            objectGrid.innerHTML = html;
+
+            // Event listeners for checkbox
+            document.querySelectorAll('.object-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const obj = this.dataset.object;
+                    if (this.checked) {
+                        if (!selectedObjects.includes(obj)) {
+                            selectedObjects.push(obj);
+                        }
+                    } else {
+                        selectedObjects = selectedObjects.filter(o => o !== obj);
+                    }
+                });
+            });
+
+            // Event listeners for label click (clicking label toggles checkbox)
+            document.querySelectorAll('.object-item label').forEach(label => {
+                label.addEventListener('click', function() {
+                    const checkbox = this.parentElement.querySelector('.object-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            });
+
+            // Update selected objects based on checkboxes
+            // (preserve selections if object still available)
+            selectedObjects = selectedObjects.filter(obj => availableSet.has(obj));
+        }
+
+        // ============================================================
+        // RENDER CHANGE TYPES
+        // ============================================================
+        function renderChangeTypes() {
+            document.querySelectorAll('.change-type-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const type = this.dataset.type;
+                    if (this.checked) {
+                        if (!selectedChangeTypes.includes(type)) {
+                            selectedChangeTypes.push(type);
+                        }
+                    } else {
+                        selectedChangeTypes = selectedChangeTypes.filter(t => t !== type);
+                    }
+                });
+            });
+
+            // Event listeners for label click (clicking label toggles checkbox)
+            document.querySelectorAll('.change-type-item label').forEach(label => {
+                label.addEventListener('click', function() {
+                    const checkbox = this.parentElement.querySelector('.change-type-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            });
+        }
+
+        // ============================================================
+        // CALCULATE DISTRIBUTION
+        // ============================================================
+        function calculateDistribution() {
+            const rooms = Object.keys(selectedRooms).filter(room => selectedRooms[room] > 0);
+            const changeTypes = selectedChangeTypes;
+            const objects = selectedObjects;
+
+            if (rooms.length === 0) {
+                showToast('❌ Please select at least one room with quota > 0.', 3000);
+                return;
+            }
+            if (changeTypes.length === 0) {
+                showToast('❌ Please select at least one change type.', 3000);
+                return;
+            }
+            if (objects.length === 0) {
+                showToast('❌ Please select at least one object.', 3000);
+                return;
+            }
+
+            const results = [];
+            let totalAllocated = 0;
+
+            rooms.forEach(room => {
+                const roomObjects = ROOM_OBJECTS[room] || [];
+                const selectedInRoom = objects.filter(obj => roomObjects.includes(obj));
+                const countObjects = selectedInRoom.length;
+                if (countObjects === 0) return;
+
+                const quota = selectedRooms[room] || 0;
+                const totalCombinations = countObjects * changeTypes.length;
+                const perCombination = Math.floor(quota / totalCombinations);
+                const remainder = quota - (perCombination * totalCombinations);
+
+                let idx = 0;
+                selectedInRoom.forEach(obj => {
+                    changeTypes.forEach(changeType => {
+                        const extra = idx < remainder ? 1 : 0;
+                        const images = perCombination + extra;
+                        if (images > 0) {
+                            results.push({ room, changeType, object: obj, images });
+                            totalAllocated += images;
+                        }
+                        idx++;
+                    });
+                });
+            });
+
+            renderResults(results, totalAllocated);
+        }
+
+        // ============================================================
+        // RENDER RESULTS
+        // ============================================================
+        function renderResults(results, totalAllocated) {
+            resultWrap.classList.add('show');
+
+            if (results.length === 0) {
+                resultBody.innerHTML = `<tr><td colspan="5" class="empty-msg">No distribution possible. Check your selections.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            results.forEach((item, index) => {
+                html += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${item.room}</td>
+                                <td>${item.changeType}</td>
+                                <td>${item.object}</td>
+                                <td><span class="highlight">${item.images}</span></td>
+                            </tr>
+                        `;
+            });
+
+            html += `
+                        <tr class="total-row">
+                            <td colspan="4" style="text-align:right;">TOTAL</td>
+                            <td>${totalAllocated}</td>
+                        </tr>
+                    `;
+
+            resultBody.innerHTML = html;
+        }
+
+        // ============================================================
+        // RESET
+        // ============================================================
+        function resetAll() {
+            if (!confirm('Reset all selections?')) return;
+            selectedRooms = {};
+            selectedChangeTypes = ['Add', 'Delete', 'Move'];
+            selectedObjects = [];
+            renderRooms();
+            renderObjects();
+            // Reset change type checkboxes
+            document.querySelectorAll('.change-type-checkbox').forEach(cb => {
+                cb.checked = true;
+            });
+            resultWrap.classList.remove('show');
+            showToast('🔄 All reset', 2000);
+        }
+
+        // ============================================================
+        // EVENT LISTENERS
+        // ============================================================
+        calculateBtn.addEventListener('click', calculateDistribution);
+        resetBtn.addEventListener('click', resetAll);
+        printBtn.addEventListener('click', function() { window.print(); });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        renderRooms();
+        renderObjects();
+        renderChangeTypes();
+    </script>
+
+</body>
+</html>
