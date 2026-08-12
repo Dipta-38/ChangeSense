@@ -939,7 +939,7 @@
                 const parts = [];
                 const sortedTypes = Object.keys(item.pairsByType).sort();
                 sortedTypes.forEach(ct => {
-                    parts.push(`${ct}: ${item.pairsByType[ct]}`);
+                    parts.push(`<strong>${ct}</strong>: ${item.pairsByType[ct]} Pairs`);
                 });
                 const pairsText = parts.join(', ');
                 // Sum pairs for this object

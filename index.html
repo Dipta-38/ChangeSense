@@ -1036,7 +1036,7 @@ td img {
 
 <div class="section-title">
 
-    📸 Step 1: Select & Process Images
+    📸 Select Images
 
 </div>
 
@@ -1118,27 +1118,13 @@ td img {
 </div>
 
 
-<div class="btn-group">
-
-    <button
-        class="btn btn-secondary"
-        id="processBtn"
-        type="button">
-
-        🔄 Compress Images
-
-    </button>
-
-</div>
-
-
 <!-- ============================================================
      SECTION: FORM DATA
 ============================================================ -->
 
 <div class="section-title">
 
-    📝 Step 2: Enter Data &amp; Upload Images
+    📝 Enter Data &amp; Submit
 
 </div>
 
@@ -1574,14 +1560,6 @@ let annotations = [];
 
 
 // ============================================================
-// STATE FOR COMPRESSED IMAGES
-// ============================================================
-
-let compressedBefore = null;
-let compressedAfter = null;
-
-
-// ============================================================
 // DOM
 // ============================================================
 
@@ -1658,11 +1636,6 @@ document.getElementById(
 const submitBtn =
 document.getElementById(
     "submitBtn"
-);
-
-const processBtn =
-document.getElementById(
-    "processBtn"
 );
 
 const clearAllBtn =
@@ -2203,45 +2176,6 @@ function compressImage(file, quality = 0.75) {
 
 
 // ============================================================
-// PROCESS IMAGES (Compress both in parallel)
-// ============================================================
-
-async function processImages() {
-    const beforeFile = beforeInput.files[0];
-    const afterFile = afterInput.files[0];
-
-    if (!beforeFile || !afterFile) {
-        showToast("❌ Select both images first!", 3000);
-        return;
-    }
-
-    processBtn.disabled = true;
-    processBtn.textContent = "⏳ Compressing...";
-
-    try {
-        const [beforeData, afterData] = await Promise.all([
-            compressImage(beforeFile, 0.75),
-            compressImage(afterFile, 0.75)
-        ]);
-
-        compressedBefore = beforeData;
-        compressedAfter = afterData;
-
-        // Visual feedback
-        beforeFileName.textContent = beforeFile.name + " ✅";
-        afterFileName.textContent = afterFile.name + " ✅";
-
-        showToast("✅ Images processed! Ready to submit.", 2000);
-    } catch (error) {
-        showToast("❌ Processing failed: " + error.message, 4000);
-    } finally {
-        processBtn.disabled = false;
-        processBtn.textContent = "🔄 Compress Images";
-    }
-}
-
-
-// ============================================================
 // IMAGE PREVIEW
 // ============================================================
 
@@ -2308,10 +2242,6 @@ beforeInput.addEventListener(
             beforeFileName
         );
 
-        // Reset processed state when new files are selected
-        compressedBefore = null;
-        compressedAfter = null;
-
     }
 );
 
@@ -2325,10 +2255,6 @@ afterInput.addEventListener(
             afterPreview,
             afterFileName
         );
-
-        // Reset processed state when new files are selected
-        compressedBefore = null;
-        compressedAfter = null;
 
     }
 );
@@ -2403,7 +2329,7 @@ afterBox.addEventListener(
 
 
 // ============================================================
-// SUBMIT (uses compressed data if available)
+// SUBMIT (compresses during submit, re-enables button after local save)
 // ============================================================
 
 async function submitData() {
@@ -2477,7 +2403,7 @@ async function submitData() {
         true;
 
     submitBtn.textContent =
-        "⏳ Saving...";
+        "⏳ Processing...";
 
 
     try {
@@ -2529,22 +2455,13 @@ async function submitData() {
 
 
         // -------------------------
-        // USE COMPRESSED DATA OR COMPRESS NOW
+        // COMPRESS BOTH IMAGES IN PARALLEL
         // -------------------------
 
-        let beforeData = compressedBefore;
-        let afterData = compressedAfter;
-
-        if (!beforeData || !afterData) {
-            showToast("⏳ Processing images...", 3000);
-            [beforeData, afterData] = await Promise.all([
-                compressImage(beforeFile, 0.75),
-                compressImage(afterFile, 0.75)
-            ]);
-            // Cache for potential reuse
-            compressedBefore = beforeData;
-            compressedAfter = afterData;
-        }
+        const [beforeData, afterData] = await Promise.all([
+            compressImage(beforeFile, 0.75),
+            compressImage(afterFile, 0.75)
+        ]);
 
 
         // -------------------------
@@ -2562,7 +2479,7 @@ async function submitData() {
                 annotations.length + 1,
 
             serialNumber:
-                serialNumber,   // <-- store the serial number
+                serialNumber,
 
             roll:
                 roll,
@@ -2637,7 +2554,18 @@ async function submitData() {
 
 
         // -------------------------
-        // GOOGLE SCRIPT PAYLOAD
+        // RE-ENABLE SUBMIT BUTTON IMMEDIATELY (after local save)
+        // -------------------------
+
+        submitBtn.disabled =
+            false;
+
+        submitBtn.textContent =
+            "💾 Submit";
+
+
+        // -------------------------
+        // GOOGLE SCRIPT PAYLOAD (fire-and-forget)
         // -------------------------
 
         const payload = {
@@ -2685,56 +2613,50 @@ async function submitData() {
 
 
         // -------------------------
-        // GOOGLE SHEET / DRIVE
+        // GOOGLE SYNC (async, doesn't block UI)
         // -------------------------
 
-        try {
+        // Use fetch without await (fire-and-forget)
+        fetch(
+            SCRIPT_URL,
+            {
 
-            await fetch(
-                SCRIPT_URL,
-                {
+                method:
+                    "POST",
 
-                    method:
-                        "POST",
+                mode:
+                    "no-cors",
 
-                    mode:
-                        "no-cors",
+                headers: {
 
-                    headers: {
+                    "Content-Type":
+                        "application/json"
 
-                        "Content-Type":
-                            "application/json"
+                },
 
-                    },
+                body:
+                    JSON.stringify(
+                        payload
+                    )
 
-                    body:
-                        JSON.stringify(
-                            payload
-                        )
-
-                }
-            );
-
-
+            }
+        )
+        .then(() => {
             showToast(
-                "✅ Saved locally + sent to Google Drive/Sheet",
-                4000
+                "✅ Local save done. Google sync sent.",
+                3000
             );
-
-        }
-        catch(syncError) {
-
+        })
+        .catch((syncError) => {
             console.error(
                 "Google sync error:",
                 syncError
             );
-
             showToast(
-                "⚠️ Saved locally, but Google sync failed",
+                "⚠️ Local save done, but Google sync failed",
                 5000
             );
-
-        }
+        });
 
 
         // -------------------------
@@ -2770,10 +2692,6 @@ async function submitData() {
         roomId.value =
             "";
 
-        // Reset compressed cache
-        compressedBefore = null;
-        compressedAfter = null;
-
 
     }
     catch(error) {
@@ -2788,9 +2706,7 @@ async function submitData() {
             5000
         );
 
-    }
-    finally {
-
+        // Re-enable button on error too
         submitBtn.disabled =
             false;
 
@@ -3592,11 +3508,6 @@ function loadJSZip() {
 // ============================================================
 // EVENT LISTENERS
 // ============================================================
-
-processBtn.addEventListener(
-    "click",
-    processImages
-);
 
 submitBtn.addEventListener(
     "click",
