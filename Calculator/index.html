@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Collection Calculator</title>
+    <title>Data Collection Calculator + Tracker</title>
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -65,6 +65,50 @@
             font-size: 13px;
             margin-top: 4px;
         }
+        .user-bar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #f7fafc;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .user-bar label {
+            font-weight: 600;
+            font-size: 15px;
+            color: #2d3748;
+        }
+        .user-bar select {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            min-width: 120px;
+        }
+        .user-bar select:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        .user-bar .stats {
+            font-size: 14px;
+            color: #2d3748;
+            margin-left: auto;
+        }
+        .user-bar .stats .done-count {
+            color: #48bb78;
+            font-weight: 700;
+        }
+        .user-bar .stats .total-count {
+            font-weight: 700;
+        }
+        .user-bar .stats .pct {
+            font-weight: 700;
+            color: #4299e1;
+        }
         .room-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -99,7 +143,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 6px;
             font-size: 13px;
-            width: 70px;
+            width: 80px;
             text-align: center;
             background: white;
         }
@@ -112,27 +156,28 @@
             color: #718096;
             margin-left: auto;
         }
-        .change-type-grid {
+        .change-type-display {
             display: flex;
             gap: 20px;
             margin-top: 8px;
             flex-wrap: wrap;
+            background: #f7fafc;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
         }
         .change-type-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .change-type-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: #4299e1;
-        }
-        .change-type-item label {
             font-size: 14px;
             color: #2d3748;
-            cursor: pointer;
+            font-weight: 500;
+        }
+        .change-type-item .badge-change {
+            background: #4299e1;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 4px;
         }
         .object-grid {
             display: grid;
@@ -287,6 +332,20 @@
             gap: 12px;
             margin: 16px 0 10px 0;
         }
+        .done-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #48bb78;
+        }
+        .row-done {
+            text-decoration: line-through;
+            opacity: 0.6;
+            background: #f0fff4 !important;
+        }
+        .row-done td {
+            text-decoration: line-through;
+        }
         @media (max-width: 600px) {
             .container {
                 padding: 16px;
@@ -311,25 +370,70 @@
             td {
                 padding: 6px 10px;
             }
+            .user-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .user-bar .stats {
+                margin-left: 0;
+                text-align: center;
+            }
         }
+        /* ===== PRINT STYLES: ONLY THE TABLE ===== */
         @media print {
-            .print-hide {
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 10px !important;
+                box-shadow: none !important;
+                background: transparent !important;
+            }
+            .container > *:not(.result-wrap) {
                 display: none !important;
             }
             .result-wrap {
                 display: block !important;
                 border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
             }
-            body {
-                padding: 0;
-                background: white;
+            .result-wrap table {
+                font-size: 12px;
+                border-collapse: collapse;
+                width: 100%;
             }
-            .container {
-                box-shadow: none;
-                padding: 20px;
+            .result-wrap th, .result-wrap td {
+                border: 1px solid #000 !important;
+                padding: 4px 8px;
+            }
+            .result-wrap th {
+                background: #f0f0f0 !important;
+                color: #000 !important;
+            }
+            .total-row {
+                background: #e0e0e0 !important;
             }
             .toast {
                 display: none !important;
+            }
+            .user-bar, .form-group, .btn-group, .print-hide, .change-type-display, .object-grid, .room-grid, .footer-note, h1, .subtitle, .badge {
+                display: none !important;
+            }
+            .row-done {
+                background: #e0e0e0 !important;
+                text-decoration: line-through !important;
+            }
+            .done-checkbox {
+                width: 18px;
+                height: 18px;
+                margin: 0;
+            }
+            .done-checkbox:checked {
+                accent-color: black;
             }
         }
     </style>
@@ -338,44 +442,60 @@
 
     <div class="container">
 
-        <!-- HEADER -->
+        <!-- HEADER (hidden in print) -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
             <div>
-                <h1>📸 Data Collection Calculator</h1>
+                <h1>📸 Data Collection Calculator + Tracker</h1>
                 <div class="subtitle">
-                    Plan your image collection by room, change type &amp; object
+                    Plan, distribute, and track your image collection progress
                     <span class="badge">7 Users</span>
                 </div>
             </div>
         </div>
 
+        <!-- ===== USER BAR (hidden in print) ===== -->
+        <div class="user-bar">
+            <label for="userSelect">👤 Your Roll:</label>
+            <select id="userSelect">
+                <option value="">-- Select --</option>
+                <option value="2107036">2107036</option>
+                <option value="2107037">2107037</option>
+                <option value="2107038">2107038</option>
+                <option value="2107039">2107039</option>
+                <option value="2107040">2107040</option>
+                <option value="2107049">2107049</option>
+                <option value="2107060">2107060</option>
+            </select>
+            <span class="stats" id="trackerStats">
+                📊 Total: <span class="total-count" id="totalItems">0</span> &nbsp;|&nbsp;
+                ✅ Done: <span class="done-count" id="doneItems">0</span> &nbsp;|&nbsp;
+                📈 <span class="pct" id="progressPercent">0%</span>
+            </span>
+            <button class="btn-sm btn-sm-danger" id="resetTrackerBtn" style="padding:4px 14px; border:none; border-radius:6px; background:#fc8181; color:white; font-weight:600; cursor:pointer;">Reset My Progress</button>
+        </div>
+
         <!-- ===== ROOMS WITH CHECKBOX & QUOTA ===== -->
         <div class="form-group">
-            <label>🏠 Select Rooms &amp; Set Quota</label>
+            <label>🏠 Select Rooms &amp; Set Quota (number of images, not pairs)</label>
             <div class="room-grid" id="roomGrid">
                 <!-- dynamically filled -->
             </div>
-            <small>Check rooms you want to collect images from. Enter quota for each selected room.</small>
+            <small>Check rooms you want to collect images from. Enter total number of <strong>images</strong> (both before + after) you want for that room.</small>
         </div>
 
-        <!-- ===== CHANGE TYPES WITH CHECKBOX ===== -->
+        <!-- ===== CHANGE TYPES (VISIBLE ONLY, NO CHECKBOX) ===== -->
         <div class="form-group">
-            <label>🔄 Select Change Types</label>
-            <div class="change-type-grid" id="changeTypeGrid">
-                <div class="change-type-item">
-                    <input type="checkbox" class="change-type-checkbox" data-type="Add" checked />
-                    <label>Add</label>
-                </div>
-                <div class="change-type-item">
-                    <input type="checkbox" class="change-type-checkbox" data-type="Delete" checked />
-                    <label>Delete</label>
-                </div>
-                <div class="change-type-item">
-                    <input type="checkbox" class="change-type-checkbox" data-type="Move" checked />
-                    <label>Move</label>
-                </div>
+            <label>🔄 Available Change Types (auto-assigned per object)</label>
+            <div class="change-type-display">
+                <span class="change-type-item">➕ Add <span class="badge-change">✓</span></span>
+                <span class="change-type-item">➖ Delete <span class="badge-change">✓</span></span>
+                <span class="change-type-item">↔️ Move <span class="badge-change">✓</span></span>
+                <span class="change-type-item">🚪 Open <span class="badge-change">✓</span></span>
+                <span class="change-type-item">🚪 Close <span class="badge-change">✓</span></span>
+                <span class="change-type-item">💡 ON <span class="badge-change">✓</span></span>
+                <span class="change-type-item">💡 OFF <span class="badge-change">✓</span></span>
             </div>
-            <small>Select which change types you want to capture.</small>
+            <small>Open/Close only for Door, Drawer, Window. ON/OFF only for Light. Others use Add/Delete/Move.</small>
         </div>
 
         <!-- ===== OBJECTS WITH CHECKBOX ===== -->
@@ -394,16 +514,16 @@
             <button class="btn btn-success" id="printBtn">🖨️ Print / Save as PDF</button>
         </div>
 
-        <!-- ===== RESULT ===== -->
+        <!-- ===== RESULT TABLE ===== -->
         <div class="result-wrap" id="resultWrap">
             <table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th style="width:40px;">#</th>
                         <th>Room</th>
-                        <th>Change Type</th>
                         <th>Object</th>
-                        <th>Images to Capture</th>
+                        <th>Image Pairs</th>
+                        <th style="width:60px;">Done</th>
                     </tr>
                 </thead>
                 <tbody id="resultBody">
@@ -414,7 +534,7 @@
             </table>
         </div>
 
-        <div class="footer-note">💡 Selected objects will be distributed evenly across selected rooms and change types. Use <strong>Print / Save as PDF</strong> to download your plan.</div>
+        <div class="footer-note">💡 Check the box to mark all pairs for that object in that room as completed. Progress is auto-saved per user and persists after reload.</div>
     </div>
 
     <!-- TOAST -->
@@ -426,57 +546,87 @@
         // ============================================================
         const ROOM_OBJECTS = {
             Bedroom: [
-                'Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Bowl', 'Box','Broom','Candle',
-                'Chair', 'Cloth', 'Clock', 'Cup','Doll', 'Desk','Electric Iron','Electrical Switch', 'Fan','Floor Mat', 'Food',
-                'Footwear', 'Glass', 'Jar','Keyboard','Laptop','Lock','Mirror','Mouse','Mop', 'Mug', 'Notebook','Pen Stand', 'Phone','Photo',
-                'Pillow','Plant','Printer', 'Rack','Remote','Sofa','Stool', 'Table', 'Table Lamp',
-                'Tissue Box', 'Towel', 'Umbrella','Vase'
+                'Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Bowl', 'Box',  
+                'Chair', 'Cloth', 'Clock', 'Cup',  'Desk','Door','Drawer', 'Electric Iron', 'Fan', 'Floor Mat',
+                'Food',
+                'Footwear', 'Glass', 'Jar', 'Jug', 'Keyboard','Keychain', 'Laptop','Light', 'Lock', 'Mirror','Monitor', 'Mouse','Moneybag', 'Mop', 'Mug', 'Notebook',
+                'Pen Stand', 'Phone', 'Photo',
+                'Pillow', 'Plant', 'Rack', 'Remote',  'Stool', 'Table', 'Table Lamp',
+                 'Towel', 'Umbrella','Window'
             ],
             Kitchen: [
-                'Bag', 'Basket', 'Blender', 'Bottle', 'Bowl', 'Box','Broom','Bucket',
-                'Chair', 'Cloth', 'Cooker', 'Cup', 'Desk','Electrical Switch',
-                'Fan','Floor Mat', 'Food', 'Glass', 'Jar', 'Kettle', 'Knife','Mop',
-                'Mug', 'Pan','Pitcher', 'Plate', 'Pot', 'Rack','Soap',
-                'Spoon', 'Table', 'Tissue Box', 'Towel', 'Tray'
+                'Bag', 'Basket', 'Blender', 'Bottle', 'Bowl', 'Box',  'Bucket',
+                'Chair', 'Cloth', 'Cooker', 'Cup', 'Desk','Door','Drawer',
+                'Fan', 'Floor Mat', 'Food', 'Glass', 'Jar', 'Jug', 'Kettle','Keychain', 'Knife','Light', 'Mop',
+                'Mug', 'Pan',  'Plate', 'Pot', 'Rack', 'Soap',
+                'Spoon', 'Table',  'Towel', 'Tray','Window'
             ],
             Dining: [
-                'Basket', 'Bottle', 'Bowl', 'Box', 'Chair', 'Cloth', 'Cup','Fan','Floor Mat', 'Food',
-                'Glass', 'Jar','Knife', 'Mug', 'Plate', 'Pot', 'Spoon',
-                'Table','Table Lamp', 'Tissue Box', 'Towel','Tray','Vase'
+                'Basket', 'Bottle', 'Bowl', 'Box', 'Chair', 'Cloth', 'Cup','Door' , 'Fan', 'Floor Mat', 'Food',
+                'Glass', 'Jar', 'Jug','keychain', 'Knife','Light','Moneybag', 'Mug', 'Plate', 'Pot', 'Spoon',
+                'Table', 'Table Lamp',  'Towel', 'Tray','Window'
             ],
             Corridor: [
                 'Bag',
-                'Basket', 'Box','Broom','Bucket', 'Chair', 'Cloth','Floor Mat', 'Footwear','Lock', 'Mirror','Mop','Plant',
-                'Rack', 'Table', 'Umbrella','Vase'
+                'Basket', 'Box',  'Bucket', 'Chair', 'Cloth','Door','Floor Mat', 'Footwear','Light', 'Lock', 'Mirror', 'Mop',
+                'Plant',
+                'Rack', 'Table', 'Umbrella','Window'
             ],
             Drawing: [
-                'Bag', 'Basket', 'Book', 'Bottle', 'Box','Broom','Candle', 'Chair',
-                'Cloth', 'Clock', 'Cup', 'Desk','Doll','Electrical Switch', 'Fan','Floor Mat', 'Food', 'Footwear',
-                'Glass','Guitar','Keyboard','Laptop','Lock','Mirror','Mouse','Mop', 'Mug', 'Notebook','Pen Stand', 'Pillow','Phone','Photo','Plant',
-                'Pot','Printer', 'Rack', 'Remote','Sofa','Stool', 'Table', 'Table Lamp',
-                'Tissue Box', 'Towel','Umbrella','Vase'
+                'Bag', 'Basket', 'Book', 'Bottle', 'Box',   'Chair',
+                'Cloth', 'Clock', 'Cup', 'Desk','Door','Drawer','Fan', 'Floor Mat', 'Food', 'Footwear',
+                'Glass',  'Jug', 'Keyboard','Keychain', 'Laptop','Light', 'Lock', 'Mirror','Moneybag', 'Mouse', 'Mop', 'Mug', 'Notebook',
+                'Pen Stand', 'Pillow', 'Phone', 'Photo', 'Plant',
+                'Pot',  'Rack', 'Remote',  'Stool', 'Table', 'Table Lamp',
+                 'Towel', 'Umbrella','Window'
             ]
         };
+
+        // ============================================================
+        // OBJECT-SPECIFIC CHANGE TYPES (only these apply)
+        // ============================================================
+        const OBJECT_CHANGE_TYPES = {
+            'Door': ['Open', 'Close'],
+            'Drawer': ['Open', 'Close'],
+            'Window': ['Open', 'Close'],
+            'Light': ['ON', 'OFF']
+        };
+
+        function getChangeTypesForObject(obj) {
+            if (OBJECT_CHANGE_TYPES[obj]) {
+                return OBJECT_CHANGE_TYPES[obj];
+            }
+            // All other objects only have Add, Delete, Move
+            return ['Add', 'Delete', 'Move'];
+        }
+
+        const ROLLS = ['2107036', '2107037', '2107038', '2107039', '2107040', '2107049', '2107060'];
 
         // ============================================================
         // DOM REFS
         // ============================================================
         const roomGrid = document.getElementById('roomGrid');
         const objectGrid = document.getElementById('objectGrid');
-        const changeTypeGrid = document.getElementById('changeTypeGrid');
         const calculateBtn = document.getElementById('calculateBtn');
         const resetBtn = document.getElementById('resetBtn');
         const printBtn = document.getElementById('printBtn');
         const resultWrap = document.getElementById('resultWrap');
         const resultBody = document.getElementById('resultBody');
         const toast = document.getElementById('toast');
+        const userSelect = document.getElementById('userSelect');
+        const totalItemsEl = document.getElementById('totalItems');
+        const doneItemsEl = document.getElementById('doneItems');
+        const progressPercent = document.getElementById('progressPercent');
+        const resetTrackerBtn = document.getElementById('resetTrackerBtn');
 
         // ============================================================
         // STATE
         // ============================================================
         let selectedRooms = {};
-        let selectedChangeTypes = ['Add', 'Delete', 'Move'];
         let selectedObjects = [];
+        let currentDistribution = []; // array of { room, object, pairsByType: { changeType: count } }
+        let currentUser = '';
+        let trackerData = {}; // key: "room|object" -> true/false
 
         // ============================================================
         // TOAST
@@ -489,6 +639,100 @@
         }
 
         // ============================================================
+        // STORAGE
+        // ============================================================
+        function getStorageKey() {
+            const user = userSelect.value;
+            if (!user) return null;
+            return `tracker_${user}`;
+        }
+
+        function getDistributionKey() {
+            const user = userSelect.value;
+            if (!user) return null;
+            return `distribution_${user}`;
+        }
+
+        function loadTrackerFromStorage() {
+            const key = getStorageKey();
+            if (!key) {
+                trackerData = {};
+                return;
+            }
+            const stored = localStorage.getItem(key);
+            if (stored) {
+                try {
+                    trackerData = JSON.parse(stored);
+                } catch (e) {
+                    trackerData = {};
+                }
+            } else {
+                trackerData = {};
+            }
+            // Also load distribution if exists
+            const distKey = getDistributionKey();
+            if (distKey) {
+                const distStored = localStorage.getItem(distKey);
+                if (distStored) {
+                    try {
+                        const parsed = JSON.parse(distStored);
+                        if (parsed && parsed.length > 0) {
+                            currentDistribution = parsed;
+                            renderResults(parsed);
+                            renderTrackerCheckboxes();
+                            updateTrackerStats();
+                            return;
+                        }
+                    } catch (e) {}
+                }
+            }
+            // If no distribution, clear table
+            resultWrap.classList.remove('show');
+            currentDistribution = [];
+            updateTrackerStats();
+        }
+
+        function saveDistributionToStorage() {
+            const key = getDistributionKey();
+            if (!key) return;
+            localStorage.setItem(key, JSON.stringify(currentDistribution));
+        }
+
+        function saveTrackerToStorage() {
+            const key = getStorageKey();
+            if (!key) return;
+            localStorage.setItem(key, JSON.stringify(trackerData));
+            updateTrackerStats();
+        }
+
+        function isDone(room, object) {
+            const key = `${room}|${object}`;
+            return trackerData[key] || false;
+        }
+
+        function toggleDone(room, object) {
+            const key = `${room}|${object}`;
+            trackerData[key] = !trackerData[key];
+            saveTrackerToStorage();
+            renderTrackerCheckboxes();
+            updateTrackerStats();
+        }
+
+        function resetTracker() {
+            const user = userSelect.value;
+            if (!user) {
+                showToast('❌ Select a user first.', 2000);
+                return;
+            }
+            if (!confirm(`Reset all progress for ${user}?`)) return;
+            trackerData = {};
+            localStorage.setItem(getStorageKey(), JSON.stringify(trackerData));
+            renderTrackerCheckboxes();
+            updateTrackerStats();
+            showToast(`🔄 Progress reset for ${user}`, 2000);
+        }
+
+        // ============================================================
         // RENDER ROOMS
         // ============================================================
         function renderRooms() {
@@ -498,17 +742,16 @@
                 const checked = selectedRooms[room] !== undefined ? 'checked' : '';
                 const quota = selectedRooms[room] || '';
                 html += `
-                        <div class="room-item">
-                            <input type="checkbox" class="room-checkbox" data-room="${room}" ${checked} />
-                            <label>${room}</label>
-                            <input type="number" class="room-quota" data-room="${room}" value="${quota}" min="1" placeholder="quota" />
-                            <span class="quota-label">images</span>
-                        </div>
-                    `;
+                            <div class="room-item">
+                                <input type="checkbox" class="room-checkbox" data-room="${room}" ${checked} />
+                                <label>${room}</label>
+                                <input type="number" class="room-quota" data-room="${room}" value="${quota}" min="1" placeholder="images" />
+                                <span class="quota-label">images</span>
+                            </div>
+                        `;
             });
             roomGrid.innerHTML = html;
 
-            // Event listeners for checkbox
             document.querySelectorAll('.room-checkbox').forEach(cb => {
                 cb.addEventListener('change', function() {
                     const room = this.dataset.room;
@@ -523,7 +766,6 @@
                 });
             });
 
-            // Event listeners for label click
             document.querySelectorAll('.room-item label').forEach(label => {
                 label.addEventListener('click', function() {
                     const checkbox = this.parentElement.querySelector('.room-checkbox');
@@ -532,7 +774,6 @@
                 });
             });
 
-            // Event listeners for quota input
             document.querySelectorAll('.room-quota').forEach(input => {
                 input.addEventListener('input', function() {
                     const room = this.dataset.room;
@@ -550,12 +791,12 @@
         function renderObjects() {
             const selectedRoomNames = Object.keys(selectedRooms);
             if (selectedRoomNames.length === 0) {
-                objectGrid.innerHTML = '<p style="color:#a0aec0; padding:10px 0;">Please select at least one room to see available objects.</p>';
+                objectGrid.innerHTML =
+                    '<p style="color:#a0aec0; padding:10px 0;">Please select at least one room to see available objects.</p>';
                 selectedObjects = [];
                 return;
             }
 
-            // Get unique objects from selected rooms
             const availableSet = new Set();
             selectedRoomNames.forEach(room => {
                 if (ROOM_OBJECTS[room]) {
@@ -564,7 +805,6 @@
             });
             const available = Array.from(availableSet).sort();
 
-            // Render checkboxes
             let html = '';
             available.forEach(obj => {
                 const checked = selectedObjects.includes(obj) ? 'checked' : '';
@@ -577,7 +817,6 @@
             });
             objectGrid.innerHTML = html;
 
-            // Event listeners for checkbox
             document.querySelectorAll('.object-checkbox').forEach(cb => {
                 cb.addEventListener('change', function() {
                     const obj = this.dataset.object;
@@ -591,7 +830,6 @@
                 });
             });
 
-            // Event listeners for label click
             document.querySelectorAll('.object-item label').forEach(label => {
                 label.addEventListener('click', function() {
                     const checkbox = this.parentElement.querySelector('.object-checkbox');
@@ -600,51 +838,29 @@
                 });
             });
 
-            // Preserve selections if object still available
             selectedObjects = selectedObjects.filter(obj => availableSet.has(obj));
         }
 
         // ============================================================
-        // RENDER CHANGE TYPES
-        // ============================================================
-        function renderChangeTypes() {
-            document.querySelectorAll('.change-type-checkbox').forEach(cb => {
-                cb.addEventListener('change', function() {
-                    const type = this.dataset.type;
-                    if (this.checked) {
-                        if (!selectedChangeTypes.includes(type)) {
-                            selectedChangeTypes.push(type);
-                        }
-                    } else {
-                        selectedChangeTypes = selectedChangeTypes.filter(t => t !== type);
-                    }
-                });
-            });
-
-            // Event listeners for label click
-            document.querySelectorAll('.change-type-item label').forEach(label => {
-                label.addEventListener('click', function() {
-                    const checkbox = this.parentElement.querySelector('.change-type-checkbox');
-                    checkbox.checked = !checkbox.checked;
-                    checkbox.dispatchEvent(new Event('change'));
-                });
-            });
-        }
-
-        // ============================================================
-        // CALCULATE DISTRIBUTION
+        // CALCULATE DISTRIBUTION (OBJECT-SPECIFIC CHANGE TYPES)
         // ============================================================
         function calculateDistribution() {
-            const rooms = Object.keys(selectedRooms).filter(room => selectedRooms[room] > 0);
-            const changeTypes = selectedChangeTypes;
+            const roomQuotaInputs = document.querySelectorAll('.room-quota');
+            const rooms = [];
+            roomQuotaInputs.forEach(input => {
+                const room = input.dataset.room;
+                const isChecked = input.parentElement.querySelector('.room-checkbox').checked;
+                const quotaImages = parseInt(input.value) || 0;
+                if (isChecked && quotaImages > 0) {
+                    const pairs = Math.ceil(quotaImages / 2);
+                    rooms.push({ room, pairs });
+                }
+            });
+
             const objects = selectedObjects;
 
             if (rooms.length === 0) {
                 showToast('❌ Please select at least one room with quota > 0.', 3000);
-                return;
-            }
-            if (changeTypes.length === 0) {
-                showToast('❌ Please select at least one change type.', 3000);
                 return;
             }
             if (objects.length === 0) {
@@ -652,41 +868,61 @@
                 return;
             }
 
-            const results = [];
-            let totalAllocated = 0;
-
-            rooms.forEach(room => {
+            const aggregated = [];
+            rooms.forEach(({ room, pairs }) => {
                 const roomObjects = ROOM_OBJECTS[room] || [];
                 const selectedInRoom = objects.filter(obj => roomObjects.includes(obj));
                 const countObjects = selectedInRoom.length;
                 if (countObjects === 0) return;
 
-                const quota = selectedRooms[room] || 0;
-                const totalCombinations = countObjects * changeTypes.length;
-                const perCombination = Math.floor(quota / totalCombinations);
-                const remainder = quota - (perCombination * totalCombinations);
+                // Build per-object change types list
+                const objectChangeTypes = {};
+                selectedInRoom.forEach(obj => {
+                    objectChangeTypes[obj] = getChangeTypesForObject(obj);
+                });
+
+                // Total combinations across all selected objects in this room
+                let totalCombinations = 0;
+                selectedInRoom.forEach(obj => {
+                    totalCombinations += objectChangeTypes[obj].length;
+                });
+
+                const perCombination = Math.floor(pairs / totalCombinations);
+                const remainder = pairs - (perCombination * totalCombinations);
 
                 let idx = 0;
                 selectedInRoom.forEach(obj => {
-                    changeTypes.forEach(changeType => {
+                    const changeTypes = objectChangeTypes[obj];
+                    const pairsByType = {};
+                    changeTypes.forEach((ct, i) => {
                         const extra = idx < remainder ? 1 : 0;
-                        const images = perCombination + extra;
-                        if (images > 0) {
-                            results.push({ room, changeType, object: obj, images });
-                            totalAllocated += images;
+                        const count = perCombination + extra;
+                        if (count > 0) {
+                            pairsByType[ct] = count;
                         }
                         idx++;
                     });
+                    // Only add if there is at least one pair across any change type
+                    if (Object.values(pairsByType).some(v => v > 0)) {
+                        aggregated.push({ room, object: obj, pairsByType });
+                    }
                 });
             });
 
-            renderResults(results, totalAllocated);
+            // Sort by room, then object
+            aggregated.sort((a, b) => {
+                if (a.room < b.room) return -1;
+                if (a.room > b.room) return 1;
+                return a.object.localeCompare(b.object);
+            });
+
+            currentDistribution = aggregated;
+            saveDistributionToStorage();
+            renderResults(aggregated);
+            loadTrackerFromStorage(); // re-apply checkboxes and stats
         }
 
-        // ============================================================
-        // RENDER RESULTS
-        // ============================================================
-        function renderResults(results, totalAllocated) {
+        function renderResults(results) {
             resultWrap.classList.add('show');
 
             if (results.length === 0) {
@@ -695,44 +931,136 @@
             }
 
             let html = '';
+            let totalPairs = 0;
             results.forEach((item, index) => {
+                const done = isDone(item.room, item.object);
+                const rowClass = done ? 'row-done' : '';
+                // Build pairs string from pairsByType
+                const parts = [];
+                const sortedTypes = Object.keys(item.pairsByType).sort();
+                sortedTypes.forEach(ct => {
+                    parts.push(`${ct}: ${item.pairsByType[ct]}`);
+                });
+                const pairsText = parts.join(', ');
+                // Sum pairs for this object
+                const sum = Object.values(item.pairsByType).reduce((a, b) => a + b, 0);
+                totalPairs += sum;
+
                 html += `
-                            <tr>
+                            <tr class="${rowClass}" data-room="${item.room}" data-object="${item.object}">
                                 <td>${index + 1}</td>
                                 <td>${item.room}</td>
-                                <td>${item.changeType}</td>
                                 <td>${item.object}</td>
-                                <td><span class="highlight">${item.images}</span></td>
+                                <td>${pairsText}</td>
+                                <td>
+                                    <input type="checkbox" class="done-checkbox" data-room="${item.room}" data-object="${item.object}" ${done ? 'checked' : ''} />
+                                </td>
                             </tr>
                         `;
             });
 
             html += `
                         <tr class="total-row">
-                            <td colspan="4" style="text-align:right;">TOTAL</td>
-                            <td>${totalAllocated}</td>
+                            <td colspan="3" style="text-align:right;">TOTAL PAIRS</td>
+                            <td>${totalPairs}</td>
+                            <td></td>
                         </tr>
                     `;
 
             resultBody.innerHTML = html;
+
+            document.querySelectorAll('.done-checkbox').forEach(cb => {
+                cb.addEventListener('change', function() {
+                    const room = this.dataset.room;
+                    const object = this.dataset.object;
+                    toggleDone(room, object);
+                    const tr = this.closest('tr');
+                    if (this.checked) {
+                        tr.classList.add('row-done');
+                    } else {
+                        tr.classList.remove('row-done');
+                    }
+                });
+            });
+
+            updateTrackerStats();
         }
 
         // ============================================================
-        // RESET
+        // RENDER CHECKBOXES (without re-rendering whole table)
+        // ============================================================
+        function renderTrackerCheckboxes() {
+            document.querySelectorAll('.done-checkbox').forEach(cb => {
+                const room = cb.dataset.room;
+                const object = cb.dataset.object;
+                const done = isDone(room, object);
+                cb.checked = done;
+                const tr = cb.closest('tr');
+                if (tr) {
+                    if (done) {
+                        tr.classList.add('row-done');
+                    } else {
+                        tr.classList.remove('row-done');
+                    }
+                }
+            });
+            updateTrackerStats();
+        }
+
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateTrackerStats() {
+            const items = currentDistribution;
+            if (!items || items.length === 0) {
+                totalItemsEl.textContent = '0';
+                doneItemsEl.textContent = '0';
+                progressPercent.textContent = '0%';
+                return;
+            }
+            const total = items.length;
+            let done = 0;
+            items.forEach(item => {
+                if (isDone(item.room, item.object)) done++;
+            });
+            totalItemsEl.textContent = total;
+            doneItemsEl.textContent = done;
+            const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+            progressPercent.textContent = pct + '%';
+        }
+
+        // ============================================================
+        // RESET ALL
         // ============================================================
         function resetAll() {
-            if (!confirm('Reset all selections?')) return;
+            if (!confirm('Reset all selections and clear results?')) return;
             selectedRooms = {};
-            selectedChangeTypes = ['Add', 'Delete', 'Move'];
-            selectedObjects = [];
+            selectedObjects = {};
+            currentDistribution = [];
+            const distKey = getDistributionKey();
+            if (distKey) localStorage.removeItem(distKey);
             renderRooms();
             renderObjects();
-            // Reset change type checkboxes
-            document.querySelectorAll('.change-type-checkbox').forEach(cb => {
-                cb.checked = true;
-            });
             resultWrap.classList.remove('show');
+            totalItemsEl.textContent = '0';
+            doneItemsEl.textContent = '0';
+            progressPercent.textContent = '0%';
             showToast('🔄 All reset', 2000);
+        }
+
+        // ============================================================
+        // USER AUTO-LOAD
+        // ============================================================
+        function onUserChange() {
+            const user = userSelect.value;
+            if (user) {
+                loadTrackerFromStorage();
+            } else {
+                trackerData = {};
+                currentDistribution = [];
+                resultWrap.classList.remove('show');
+                updateTrackerStats();
+            }
         }
 
         // ============================================================
@@ -741,13 +1069,27 @@
         calculateBtn.addEventListener('click', calculateDistribution);
         resetBtn.addEventListener('click', resetAll);
         printBtn.addEventListener('click', function() { window.print(); });
+        userSelect.addEventListener('change', onUserChange);
+        resetTrackerBtn.addEventListener('click', resetTracker);
 
         // ============================================================
         // INIT
         // ============================================================
         renderRooms();
         renderObjects();
-        renderChangeTypes();
+
+        const lastUser = localStorage.getItem('tracker_last_user');
+        if (lastUser && ROLLS.includes(lastUser)) {
+            userSelect.value = lastUser;
+            setTimeout(() => {
+                onUserChange();
+            }, 100);
+        }
+        userSelect.addEventListener('change', function() {
+            localStorage.setItem('tracker_last_user', this.value);
+        });
+
+        showToast('💡 Select your roll to track progress', 3000);
     </script>
 
 </body>
