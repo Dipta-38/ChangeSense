@@ -112,6 +112,28 @@
             color: #718096;
             margin-left: auto;
         }
+        .change-type-grid {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .change-type-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .change-type-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #4299e1;
+        }
+        .change-type-item label {
+            font-size: 14px;
+            color: #2d3748;
+            cursor: pointer;
+        }
         .object-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -137,28 +159,6 @@
         }
         .object-item label {
             font-size: 13px;
-            color: #2d3748;
-            cursor: pointer;
-        }
-        .change-type-grid {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .change-type-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .change-type-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: #4299e1;
-        }
-        .change-type-item label {
-            font-size: 14px;
             color: #2d3748;
             cursor: pointer;
         }
@@ -422,28 +422,38 @@
 
     <script>
         // ============================================================
-        // DATA
+        // DATA - Practical object mapping for each room
         // ============================================================
-        // Practical object mapping for each room
         const ROOM_OBJECTS = {
-            Bedroom: ['Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Bowl', 'Box', 'Bucket',
-                'Chair', 'Clock', 'Cup', 'Duster', 'Footwear', 'Glass', 'Jar',
-                'Laptop', 'Mug', 'Notebook', 'Pillow', 'Pot', 'Rack',
-                'Table', 'Table Lamp', 'Tissue Box', 'Towel', 'Umbrella', 'Wall Photo'
+            Bedroom: [
+                'Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Bowl', 'Box','Candle',
+                'Chair', 'Cloth', 'Clock', 'Cup','Doll', 'Desk','Electric Iron','Electrical Switch', 'Fan','Floor Mat', 'Food',
+                'Footwear', 'Glass', 'Jar','Keyboard','Laptop','Lock','Mirror','Mouse','Mop', 'Mug', 'Notebook','Pen Stand', 'Phone','Photo',
+                'Pillow','Plant', 'Rack','Remote', 'Table', 'Table Lamp',
+                'Tissue Box', 'Towel', 'Umbrella','Vase'
             ],
-            Kitchen: ['Bag', 'Basket', 'Bottle', 'Bowl', 'Box', 'Bucket',
-                'Chair', 'Clock', 'Cup', 'Duster', 'Food', 'Glass', 'Jar', 'Knife',
-                'Mug', 'Pan', 'Plate', 'Pot', 'Rack', 'Spoon', 'Table', 'Tissue Box'
+            Kitchen: [
+                'Bag', 'Basket', 'Blender', 'Bottle', 'Bowl', 'Box', 'Bucket',
+                'Chair', 'Cloth', 'Cooker', 'Cup', 'Desk','Electrical Switch',
+                'Fan','Floor Mat', 'Food', 'Glass', 'Jar', 'Kettle', 'Knife','Mop',
+                'Mug', 'Pan','Pitcher', 'Plate', 'Pot', 'Rack','Soap',
+                'Spoon', 'Table', 'Tissue Box', 'Towel', 'Tray'
             ],
-            Dining: ['Bag', 'Bottle', 'Bowl', 'Box', 'Chair', 'Cup', 'Duster', 'Glass',
-                'Jar', 'Mug', 'Plate', 'Pot', 'Table', 'Tissue Box'
+            Dining: [
+                'Basket', 'Bottle', 'Bowl', 'Box', 'Chair', 'Cloth', 'Cup','Fan','Floor Mat', 'Food',
+                'Glass', 'Jar','Knife', 'Mug', 'Plate', 'Pot', 'Spoon',
+                'Table','Table Lamp', 'Tissue Box', 'Towel','Tray','Vase'
             ],
-            Corridor: ['Basket', 'Box', 'Bucket', 'Clock', 'Duster', 'Footwear',
-                'Rack', 'Table', 'Tissue Box', 'Umbrella', 'Wall Photo'
+            Corridor: [
+                'Bag',
+                'Basket', 'Box', 'Bucket', 'Chair', 'Cloth','Floor Mat', 'Footwear','Lock', 'Mirror','Plant',
+                'Rack', 'Table', 'Umbrella'
             ],
-            Drawing: ['Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Box',
-                'Chair', 'Clock', 'Cup', 'Duster', 'Glass', 'Laptop', 'Mug',
-                'Notebook', 'Pillow', 'Pot', 'Rack', 'Table', 'Table Lamp',
+            Drawing: [
+                'Bag', 'Basket', 'Blanket', 'Book', 'Bottle', 'Box', 'Chair',
+                'Cloth', 'Clock', 'Cup', 'Desk', 'Duster', 'Fan',
+                'Glass', 'Laptop', 'Mug', 'Notebook', 'Pillow',
+                'Pot', 'Rack', 'Remote', 'Table', 'Table Lamp',
                 'Tissue Box', 'Towel', 'Wall Photo'
             ]
         };
@@ -488,13 +498,13 @@
                 const checked = selectedRooms[room] !== undefined ? 'checked' : '';
                 const quota = selectedRooms[room] || '';
                 html += `
-                            <div class="room-item">
-                                <input type="checkbox" class="room-checkbox" data-room="${room}" ${checked} />
-                                <label>${room}</label>
-                                <input type="number" class="room-quota" data-room="${room}" value="${quota}" min="1" placeholder="quota" />
-                                <span class="quota-label">images</span>
-                            </div>
-                        `;
+                        <div class="room-item">
+                            <input type="checkbox" class="room-checkbox" data-room="${room}" ${checked} />
+                            <label>${room}</label>
+                            <input type="number" class="room-quota" data-room="${room}" value="${quota}" min="1" placeholder="quota" />
+                            <span class="quota-label">images</span>
+                        </div>
+                    `;
             });
             roomGrid.innerHTML = html;
 
@@ -513,7 +523,7 @@
                 });
             });
 
-            // Event listeners for label click (clicking label toggles checkbox)
+            // Event listeners for label click
             document.querySelectorAll('.room-item label').forEach(label => {
                 label.addEventListener('click', function() {
                     const checkbox = this.parentElement.querySelector('.room-checkbox');
@@ -581,7 +591,7 @@
                 });
             });
 
-            // Event listeners for label click (clicking label toggles checkbox)
+            // Event listeners for label click
             document.querySelectorAll('.object-item label').forEach(label => {
                 label.addEventListener('click', function() {
                     const checkbox = this.parentElement.querySelector('.object-checkbox');
@@ -590,8 +600,7 @@
                 });
             });
 
-            // Update selected objects based on checkboxes
-            // (preserve selections if object still available)
+            // Preserve selections if object still available
             selectedObjects = selectedObjects.filter(obj => availableSet.has(obj));
         }
 
@@ -612,7 +621,7 @@
                 });
             });
 
-            // Event listeners for label click (clicking label toggles checkbox)
+            // Event listeners for label click
             document.querySelectorAll('.change-type-item label').forEach(label => {
                 label.addEventListener('click', function() {
                     const checkbox = this.parentElement.querySelector('.change-type-checkbox');
