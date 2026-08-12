@@ -387,7 +387,7 @@ h1 {
 
 
 /* ============================================================
-   IMAGE UPLOAD AREA (TOP)
+   IMAGE UPLOAD AREA (BOTTOM)
 ============================================================ */
 
 .image-upload-area {
@@ -1031,100 +1031,12 @@ td img {
 
 
 <!-- ============================================================
-     SECTION: IMAGE UPLOAD (TOP)
+     SECTION: FORM DATA (TOP)
 ============================================================ -->
 
 <div class="section-title">
 
-    📸 Select Images
-
-</div>
-
-
-<div class="image-upload-area">
-
-
-    <!-- BEFORE -->
-
-    <div
-        class="image-box"
-        id="beforeBox">
-
-        <label>
-            📸 Before
-        </label>
-
-        <button
-            class="upload-btn"
-            type="button">
-
-            Choose File
-
-        </button>
-
-        <input
-            type="file"
-            id="beforeInput"
-            accept="image/*">
-
-        <img
-            id="beforePreview"
-            class="image-preview"
-            alt="Before preview">
-
-        <div
-            id="beforeFileName"
-            class="file-name">
-        </div>
-
-    </div>
-
-
-    <!-- AFTER -->
-
-    <div
-        class="image-box"
-        id="afterBox">
-
-        <label>
-            📸 After
-        </label>
-
-        <button
-            class="upload-btn"
-            type="button">
-
-            Choose File
-
-        </button>
-
-        <input
-            type="file"
-            id="afterInput"
-            accept="image/*">
-
-        <img
-            id="afterPreview"
-            class="image-preview"
-            alt="After preview">
-
-        <div
-            id="afterFileName"
-            class="file-name">
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ============================================================
-     SECTION: FORM DATA
-============================================================ -->
-
-<div class="section-title">
-
-    📝 Enter Data &amp; Submit
+    📝 Enter Data
 
 </div>
 
@@ -1357,6 +1269,94 @@ td img {
 <option value="Umbrella">Umbrella</option>
 <option value="Window">Window</option>
         </select>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     SECTION: IMAGE UPLOAD (BOTTOM)
+============================================================ -->
+
+<div class="section-title">
+
+    📸 Upload Images
+
+</div>
+
+
+<div class="image-upload-area">
+
+
+    <!-- BEFORE -->
+
+    <div
+        class="image-box"
+        id="beforeBox">
+
+        <label>
+            📸 Before
+        </label>
+
+        <button
+            class="upload-btn"
+            type="button">
+
+            Choose File
+
+        </button>
+
+        <input
+            type="file"
+            id="beforeInput"
+            accept="image/*">
+
+        <img
+            id="beforePreview"
+            class="image-preview"
+            alt="Before preview">
+
+        <div
+            id="beforeFileName"
+            class="file-name">
+        </div>
+
+    </div>
+
+
+    <!-- AFTER -->
+
+    <div
+        class="image-box"
+        id="afterBox">
+
+        <label>
+            📸 After
+        </label>
+
+        <button
+            class="upload-btn"
+            type="button">
+
+            Choose File
+
+        </button>
+
+        <input
+            type="file"
+            id="afterInput"
+            accept="image/*">
+
+        <img
+            id="afterPreview"
+            class="image-preview"
+            alt="After preview">
+
+        <div
+            id="afterFileName"
+            class="file-name">
+        </div>
 
     </div>
 
@@ -2248,8 +2248,7 @@ afterInput.addEventListener(
         previewFile(
             afterInput,
             afterPreview,
-            afterFileName
-        );
+            afterFileName        );
 
     }
 );
