@@ -1539,7 +1539,7 @@ td img {
 // ============================================================
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzN6I39Ah2r6PnphZ4hT_MJUkJO8M4sqlGjSnD8dyC8s2qSTfPnBGjWFXjTyo8lGXZNhQ/exec";
+"https://script.google.com/macros/s/AKfycbyZhcJ_cFPu-_Rjk7a7bgJ3Panyj5lmypCDlFSYsJhwzmqnNts8yxGCdqfcwAAXduiP8g/exec";
 
 
 // ============================================================
@@ -2084,13 +2084,8 @@ function getNextLocalImageId() {
 // ============================================================
 // FILENAME GENERATOR
 //
-// USES SERIAL FROM LOCAL STORAGE
-// Same suffix as Google Sheet ImageID
-//
-// EXACT:
-//
-// before-add-bag-bedroom-cam-1-b38-1_001.jpg
-//
+// SERIAL NUMBER AT FRONT (4 digits: 0001)
+// Example: 0001-before-add-bag-bedroom-cam-1-b36-1.jpg
 // ============================================================
 
 function generateFilename(
@@ -2103,16 +2098,18 @@ function generateFilename(
     serialNumber
 ) {
 
+    // 4-digit serial: 0001, 0002, 0010, 0100, 1000
     const number =
         String(
             serialNumber
         ).padStart(
-            3,
+            4,
             "0"
         );
 
 
-    return [
+    // Build the main part (without the serial)
+    const mainPart = [
 
         side,
 
@@ -2137,13 +2134,11 @@ function generateFilename(
             roomIdValue
         )
 
-    ].join("-")
-    +
-    "_"
-    +
-    number
-    +
-    ".jpg";
+    ].join("-");
+
+
+    // Return: number + "-" + mainPart + ".jpg"
+    return number + "-" + mainPart + ".jpg";
 
 }
 
@@ -3218,8 +3213,8 @@ function dataURLToBlob(
 //
 // ML_Dataset_Images/
 //     2107038/
-//         before-add-bag-bedroom-cam-1-b38-1_001.jpg
-//         after-add-bag-bedroom-cam-1-b38-1_001.jpg
+//         0001-before-add-bag-bedroom-cam-1-b36-1.jpg
+//         0001-after-add-bag-bedroom-cam-1-b36-1.jpg
 //
 // ============================================================
 
