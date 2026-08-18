@@ -526,33 +526,31 @@ h1 {
 
 
 /* ============================================================
-   CAMERA BUTTONS
+   CAMERA BUTTONS (Individual below each upload area)
 ============================================================ */
 
-.camera-btn-group {
+.camera-btn-wrapper {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: -4px 0 14px 0;
     justify-content: center;
+    margin-top: 6px;
 }
 
 .camera-btn {
-    padding: 10px 20px;
+    padding: 6px 16px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: 600;
-    font-size: clamp(13px, 1.6vw, 15px);
+    font-size: clamp(12px, 1.4vw, 14px);
     cursor: pointer;
     transition: 0.2s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 44px;
-    flex: 1;
-    min-width: 140px;
+    gap: 6px;
+    min-height: 36px;
     color: white;
+    width: 100%;
+    max-width: 180px;
 }
 
 .camera-btn-before {
@@ -572,6 +570,13 @@ h1 {
 .camera-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Hide camera buttons on desktop (laptop/PC) */
+@media (hover: hover) and (min-width: 768px) {
+    .camera-btn-wrapper {
+        display: none;
+    }
 }
 
 
@@ -985,10 +990,6 @@ td img {
         grid-template-columns: 1fr;
     }
 
-    .camera-btn-group {
-        flex-direction: column;
-    }
-
     .btn-group {
 
         flex-direction: column;
@@ -1374,6 +1375,13 @@ td img {
             class="file-name">
         </div>
 
+        <!-- Camera button for Before (only visible on phone) -->
+        <div class="camera-btn-wrapper">
+            <button class="camera-btn camera-btn-before" id="cameraBeforeBtn">
+                📷 Open Camera
+            </button>
+        </div>
+
     </div>
 
 
@@ -1410,21 +1418,15 @@ td img {
             class="file-name">
         </div>
 
+        <!-- Camera button for After (only visible on phone) -->
+        <div class="camera-btn-wrapper">
+            <button class="camera-btn camera-btn-after" id="cameraAfterBtn">
+                📷 Open Camera
+            </button>
+        </div>
+
     </div>
 
-</div>
-
-<!-- ============================================================
-     CAMERA UPLOAD BUTTONS
-============================================================ -->
-
-<div class="camera-btn-group">
-    <button class="camera-btn camera-btn-before" id="cameraBeforeBtn">
-        📷 Open Camera (Before)
-    </button>
-    <button class="camera-btn camera-btn-after" id="cameraAfterBtn">
-        📷 Open Camera (After)
-    </button>
 </div>
 
 
