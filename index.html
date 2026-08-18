@@ -1420,10 +1420,10 @@ td img {
 
 <div class="camera-btn-group">
     <button class="camera-btn camera-btn-before" id="cameraBeforeBtn">
-        📷 Camera Upload
+        📷 Open Camera (Before)
     </button>
     <button class="camera-btn camera-btn-after" id="cameraAfterBtn">
-        📷 Camera Upload
+        📷 Open Camera (After)
     </button>
 </div>
 
@@ -2398,78 +2398,53 @@ afterBox.addEventListener(
 
 
 // ============================================================
-// CAMERA CAPTURE FUNCTIONS
+// CAMERA CAPTURE FUNCTIONS (Opens external camera app)
 // ============================================================
 
-function captureCameraImage(inputElement, previewElement, nameElement, sideLabel) {
-    // Check if browser supports getUserMedia
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        showToast("❌ Camera not supported on this browser", 3000);
-        return;
-    }
-
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // Request camera access
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.play();
-
-            // Show a temporary prompt
-            showToast("📷 Capturing " + sideLabel + " image...", 2000);
-
-            // Wait a moment for camera to adjust
-            setTimeout(function() {
-                // Set canvas size (1920x1080 for high quality)
-                canvas.width = 1920;
-                canvas.height = 1080;
-
-                // Draw video frame to canvas
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                // Stop all camera tracks
-                stream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-
-                // Convert canvas to data URL (JPEG, quality 0.85)
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-
-                // Create a file from data URL
-                fetch(dataUrl)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const file = new File([blob], sideLabel + "_" + Date.now() + ".jpg", { type: 'image/jpeg' });
-                        
-                        // Create a FileList-like object
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        inputElement.files = dataTransfer.files;
-
-                        // Trigger change event
-                        const event = new Event('change', { bubbles: true });
-                        inputElement.dispatchEvent(event);
-
-                        // Update preview
-                        previewElement.src = dataUrl;
-                        previewElement.classList.add('show');
-                        nameElement.textContent = file.name;
-
-                        showToast("✅ " + sideLabel + " image captured!", 2000);
-                    })
-                    .catch(function(err) {
-                        showToast("❌ Error processing image: " + err.message, 3000);
-                    });
-
-            }, 500); // 500ms delay for camera to focus
-
-        })
-        .catch(function(err) {
-            showToast("❌ Camera access denied: " + err.message, 4000);
-            console.error("Camera error:", err);
-        });
+function openExternalCamera(inputElement, previewElement, nameElement, sideLabel) {
+    // Create a hidden file input with capture attribute
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.capture = 'environment'; // 'user' for front camera, 'environment' for rear
+    
+    // When file is selected
+    fileInput.onchange = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        // Update the main file input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        inputElement.files = dataTransfer.files;
+        
+        // Trigger change event
+        const changeEvent = new Event('change', { bubbles: true });
+        inputElement.dispatchEvent(changeEvent);
+        
+        // Update preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewElement.src = e.target.result;
+            previewElement.classList.add('show');
+            nameElement.textContent = file.name;
+            showToast("✅ " + sideLabel + " image selected from camera!", 2000);
+        };
+        reader.readAsDataURL(file);
+        
+        // Clean up
+        document.body.removeChild(fileInput);
+    };
+    
+    // If user cancels camera
+    fileInput.oncancel = function() {
+        showToast("ℹ️ Camera cancelled", 2000);
+        document.body.removeChild(fileInput);
+    };
+    
+    // Append to body and click
+    document.body.appendChild(fileInput);
+    fileInput.click();
 }
 
 // ============================================================
@@ -2477,11 +2452,11 @@ function captureCameraImage(inputElement, previewElement, nameElement, sideLabel
 // ============================================================
 
 cameraBeforeBtn.addEventListener('click', function() {
-    captureCameraImage(beforeInput, beforePreview, beforeFileName, "Before");
+    openExternalCamera(beforeInput, beforePreview, beforeFileName, "Before");
 });
 
 cameraAfterBtn.addEventListener('click', function() {
-    captureCameraImage(afterInput, afterPreview, afterFileName, "After");
+    openExternalCamera(afterInput, afterPreview, afterFileName, "After");
 });
 
 
