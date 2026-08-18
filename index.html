@@ -526,6 +526,56 @@ h1 {
 
 
 /* ============================================================
+   CAMERA BUTTONS
+============================================================ */
+
+.camera-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: -4px 0 14px 0;
+    justify-content: center;
+}
+
+.camera-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: clamp(13px, 1.6vw, 15px);
+    cursor: pointer;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    flex: 1;
+    min-width: 140px;
+    color: white;
+}
+
+.camera-btn-before {
+    background: #4299e1;
+}
+.camera-btn-before:hover {
+    background: #3182ce;
+}
+
+.camera-btn-after {
+    background: #48bb78;
+}
+.camera-btn-after:hover {
+    background: #38a169;
+}
+
+.camera-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
    FORM
 ============================================================ */
 
@@ -933,6 +983,10 @@ td img {
     .image-upload-area {
 
         grid-template-columns: 1fr;
+    }
+
+    .camera-btn-group {
+        flex-direction: column;
     }
 
     .btn-group {
@@ -1360,6 +1414,19 @@ td img {
 
 </div>
 
+<!-- ============================================================
+     CAMERA UPLOAD BUTTONS
+============================================================ -->
+
+<div class="camera-btn-group">
+    <button class="camera-btn camera-btn-before" id="cameraBeforeBtn">
+        📷 Camera Upload
+    </button>
+    <button class="camera-btn camera-btn-after" id="cameraAfterBtn">
+        📷 Camera Upload
+    </button>
+</div>
+
 
 <!-- ============================================================
      BUTTONS (Submit, Clear, CSV, ZIP)
@@ -1649,6 +1716,16 @@ document.getElementById(
 const exportZipBtn =
 document.getElementById(
     "exportZipBtn"
+);
+
+const cameraBeforeBtn =
+document.getElementById(
+    "cameraBeforeBtn"
+);
+
+const cameraAfterBtn =
+document.getElementById(
+    "cameraAfterBtn"
 );
 
 const tbody =
@@ -2318,6 +2395,94 @@ afterBox.addEventListener(
 
     }
 );
+
+
+// ============================================================
+// CAMERA CAPTURE FUNCTIONS
+// ============================================================
+
+function captureCameraImage(inputElement, previewElement, nameElement, sideLabel) {
+    // Check if browser supports getUserMedia
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast("❌ Camera not supported on this browser", 3000);
+        return;
+    }
+
+    const video = document.createElement('video');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Request camera access
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+        .then(function(stream) {
+            video.srcObject = stream;
+            video.play();
+
+            // Show a temporary prompt
+            showToast("📷 Capturing " + sideLabel + " image...", 2000);
+
+            // Wait a moment for camera to adjust
+            setTimeout(function() {
+                // Set canvas size (1920x1080 for high quality)
+                canvas.width = 1920;
+                canvas.height = 1080;
+
+                // Draw video frame to canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Stop all camera tracks
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+
+                // Convert canvas to data URL (JPEG, quality 0.85)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+                // Create a file from data URL
+                fetch(dataUrl)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], sideLabel + "_" + Date.now() + ".jpg", { type: 'image/jpeg' });
+                        
+                        // Create a FileList-like object
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        inputElement.files = dataTransfer.files;
+
+                        // Trigger change event
+                        const event = new Event('change', { bubbles: true });
+                        inputElement.dispatchEvent(event);
+
+                        // Update preview
+                        previewElement.src = dataUrl;
+                        previewElement.classList.add('show');
+                        nameElement.textContent = file.name;
+
+                        showToast("✅ " + sideLabel + " image captured!", 2000);
+                    })
+                    .catch(function(err) {
+                        showToast("❌ Error processing image: " + err.message, 3000);
+                    });
+
+            }, 500); // 500ms delay for camera to focus
+
+        })
+        .catch(function(err) {
+            showToast("❌ Camera access denied: " + err.message, 4000);
+            console.error("Camera error:", err);
+        });
+}
+
+// ============================================================
+// CAMERA BUTTON EVENTS
+// ============================================================
+
+cameraBeforeBtn.addEventListener('click', function() {
+    captureCameraImage(beforeInput, beforePreview, beforeFileName, "Before");
+});
+
+cameraAfterBtn.addEventListener('click', function() {
+    captureCameraImage(afterInput, afterPreview, afterFileName, "After");
+});
 
 
 // ============================================================
