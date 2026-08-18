@@ -526,61 +526,6 @@ h1 {
 
 
 /* ============================================================
-   CAMERA BUTTONS (Individual below each upload area)
-============================================================ */
-
-.camera-btn-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 6px;
-}
-
-.camera-btn {
-    padding: 6px 16px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: clamp(12px, 1.4vw, 14px);
-    cursor: pointer;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    min-height: 36px;
-    color: white;
-    width: 100%;
-    max-width: 180px;
-}
-
-.camera-btn-before {
-    background: #4299e1;
-}
-.camera-btn-before:hover {
-    background: #3182ce;
-}
-
-.camera-btn-after {
-    background: #48bb78;
-}
-.camera-btn-after:hover {
-    background: #38a169;
-}
-
-.camera-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Hide camera buttons on desktop (laptop/PC) */
-@media (hover: hover) and (min-width: 768px) {
-    .camera-btn-wrapper {
-        display: none;
-    }
-}
-
-
-/* ============================================================
    FORM
 ============================================================ */
 
@@ -1375,13 +1320,6 @@ td img {
             class="file-name">
         </div>
 
-        <!-- Camera button for Before (only visible on phone) -->
-        <div class="camera-btn-wrapper">
-            <button class="camera-btn camera-btn-before" id="cameraBeforeBtn">
-                📷 Open Camera
-            </button>
-        </div>
-
     </div>
 
 
@@ -1416,13 +1354,6 @@ td img {
         <div
             id="afterFileName"
             class="file-name">
-        </div>
-
-        <!-- Camera button for After (only visible on phone) -->
-        <div class="camera-btn-wrapper">
-            <button class="camera-btn camera-btn-after" id="cameraAfterBtn">
-                📷 Open Camera
-            </button>
         </div>
 
     </div>
@@ -1718,16 +1649,6 @@ document.getElementById(
 const exportZipBtn =
 document.getElementById(
     "exportZipBtn"
-);
-
-const cameraBeforeBtn =
-document.getElementById(
-    "cameraBeforeBtn"
-);
-
-const cameraAfterBtn =
-document.getElementById(
-    "cameraAfterBtn"
 );
 
 const tbody =
@@ -2397,68 +2318,6 @@ afterBox.addEventListener(
 
     }
 );
-
-
-// ============================================================
-// CAMERA CAPTURE FUNCTIONS (Opens external camera app)
-// ============================================================
-
-function openExternalCamera(inputElement, previewElement, nameElement, sideLabel) {
-    // Create a hidden file input with capture attribute
-const fileInput = document.createElement('input');
-fileInput.type = 'file';
-fileInput.accept = 'image/*'; // 'user' for front camera, 'environment' for rear
-    
-    // When file is selected
-    fileInput.onchange = function(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        
-        // Update the main file input
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        inputElement.files = dataTransfer.files;
-        
-        // Trigger change event
-        const changeEvent = new Event('change', { bubbles: true });
-        inputElement.dispatchEvent(changeEvent);
-        
-        // Update preview
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewElement.src = e.target.result;
-            previewElement.classList.add('show');
-            nameElement.textContent = file.name;
-            showToast("✅ " + sideLabel + " image selected from camera!", 2000);
-        };
-        reader.readAsDataURL(file);
-        
-        // Clean up
-        document.body.removeChild(fileInput);
-    };
-    
-    // If user cancels camera
-    fileInput.oncancel = function() {
-        showToast("ℹ️ Camera cancelled", 2000);
-        document.body.removeChild(fileInput);
-    };
-    
-    // Append to body and click
-    document.body.appendChild(fileInput);
-    fileInput.click();
-}
-
-// ============================================================
-// CAMERA BUTTON EVENTS
-// ============================================================
-
-cameraBeforeBtn.addEventListener('click', function() {
-    openExternalCamera(beforeInput, beforePreview, beforeFileName, "Before");
-});
-
-cameraAfterBtn.addEventListener('click', function() {
-    openExternalCamera(afterInput, afterPreview, afterFileName, "After");
-});
 
 
 // ============================================================
